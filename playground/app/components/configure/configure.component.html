@@ -1,0 +1,43 @@
+<div fsDrawerContent>
+
+  <h2>Configure</h2>
+
+  <div fxLayout="column">
+
+    <fs-label>Markers</fs-label>
+    <div *ngFor="let marker of config.markers">
+      [{{marker.lat}}, {{marker.lon}}] <a (click)="removeMarker(marker)">[x]</a>
+    </div>
+
+    <fs-label>New Marker</fs-label>
+
+    <form (ngSubmit)="add()">
+      <mat-form-field>
+        <input matInput
+               placeholder="Latitude"
+               name="latitude"
+               type="number"
+               [(ngModel)]="marker.lat"
+               required
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput
+               placeholder="Longitude"
+               name="longitude"
+               type="number"
+               [(ngModel)]="marker.lon"
+               required
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Icon URL" name="url" [(ngModel)]="marker.icon">
+      </mat-form-field>
+
+      <button mat-raised-button type="submit">add</button>
+    </form>
+  </div>
+
+</div>

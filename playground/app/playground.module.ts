@@ -10,13 +10,15 @@ import { FsMessageModule } from '@firestitch/message';
 import { ToastrModule } from 'ngx-toastr';
 
 import { FsComponentModule } from '@firestitch/package';
-
+import { FsLabelModule } from '@firestitch/label';
 import { AppMaterialModule } from './material.module';
 import {
   ExampleComponent,
   ExamplesComponent
 } from './components';
 import { AppComponent } from './app.component';
+import { AgmCoreModule } from '@agm/core';
+import { ConfigureComponent } from './components/configure/configure.componen';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
@@ -32,18 +34,23 @@ const routes: Routes = [
     FormsModule,
     FsExampleModule.forRoot(),
     FsMessageModule.forRoot(),
+    FsLabelModule,
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk'
+    })
   ],
   entryComponents: [
+    ConfigureComponent,
   ],
   declarations: [
     AppComponent,
     ExamplesComponent,
-    ExampleComponent
+    ExampleComponent,
+    ConfigureComponent,
   ],
-  providers: [
-  ],
+  providers: []
 })
 export class PlaygroundModule {
 }

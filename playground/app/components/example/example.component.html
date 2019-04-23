@@ -1,1 +1,35 @@
-<fs-component></fs-component>
+<agm-map
+  [latitude]="47.283645"
+  [longitude]="39.716100"
+  [ngStyle]="{'height': '300px'}"
+  [fitBounds]="true"
+  [maxZoom]="16"
+>
+  <agm-marker
+    *ngFor="let marker of config.markers"
+    [title]="marker.label"
+    [latitude]="marker.lat"
+    [longitude]="marker.lon"
+    [iconUrl]="marker.icon"
+    [agmFitBounds]="true"
+  ></agm-marker>
+
+  <!--<agm-marker-->
+    <!--[latitude]="47.283645"-->
+    <!--[longitude]="39.716100"-->
+    <!--[agmFitBounds]="true"-->
+  <!--&gt;</agm-marker>-->
+
+  <!--<agm-marker
+    [latitude]="47.199231"
+    [longitude]="39.608993"
+    [agmFitBounds]="true"
+  ></agm-marker>
+
+
+  <agm-marker
+    [latitude]="44.296282"
+    [longitude]="-79.784368"
+    [agmFitBounds]="true"
+  ></agm-marker>-->
+</agm-map>
