@@ -9,7 +9,7 @@ import { FsMessageModule } from '@firestitch/message';
 
 import { ToastrModule } from 'ngx-toastr';
 
-import { FsComponentModule } from '@firestitch/package';
+import { FsMapModule } from '@firestitch/package';
 import { FsLabelModule } from '@firestitch/label';
 import { AppMaterialModule } from './material.module';
 import {
@@ -28,7 +28,7 @@ const routes: Routes = [
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
-    FsComponentModule,
+    FsMapModule,
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
@@ -36,7 +36,7 @@ const routes: Routes = [
     FsMessageModule.forRoot(),
     FsLabelModule,
     ToastrModule.forRoot({ preventDuplicates: true }),
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk'
     })
