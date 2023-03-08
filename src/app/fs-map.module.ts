@@ -25,12 +25,16 @@ import { FS_MAP_GOOGLE_MAP_KEY } from './injectors';
   ],
 })
 export class FsMapModule {
-  static forRoot(config: { googleMapKey: string }): ModuleWithProviders<FsMapModule> {
+  static forRoot(config: { googleMapKey?: string } = {}): ModuleWithProviders<FsMapModule> {
+    const providers = [];
+
+    if(config?.googleMapKey) {    
+      providers.push({ provide: FS_MAP_GOOGLE_MAP_KEY, useFactory: () => config.googleMapKey });
+    }
+
     return {
       ngModule: FsMapModule,
-      providers: [
-        { provide: FS_MAP_GOOGLE_MAP_KEY, useValue: config.googleMapKey }
-      ]
+      providers
     };
   }
 }

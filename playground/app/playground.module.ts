@@ -9,7 +9,7 @@ import { FsMessageModule } from '@firestitch/message';
 
 import { ToastrModule } from 'ngx-toastr';
 
-import { FsMapModule } from '@firestitch/map';
+import { FsMapModule, FS_MAP_GOOGLE_MAP_KEY } from '@firestitch/map';
 import { FsLabelModule } from '@firestitch/label';
 import { AppMaterialModule } from './material.module';
 import {
@@ -36,12 +36,12 @@ const routes: Routes = [
     FsLabelModule,
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-    FsMapModule.forRoot({
-      googleMapKey: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE'
-    })
   ],
-  entryComponents: [
-    ConfigureComponent,
+  providers: [
+    { 
+      provide: FS_MAP_GOOGLE_MAP_KEY, 
+      useFactory: () => 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE' 
+    },
   ],
   declarations: [
     AppComponent,
