@@ -1,0 +1,14 @@
+
+<div *ngIf="loaded$ | async">
+  <google-map 
+      [width]="width"
+      [height]="height"
+      [options]="options">
+    <map-marker 
+      *ngFor="let mapMarker of mapMarkers"
+      [position]="mapMarker.position"
+      [options]="mapMarker.options"
+      (mapDragend)="mapMarker.dragEnd.emit($event)">
+    </map-marker>
+  </google-map>
+</div>

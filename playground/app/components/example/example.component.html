@@ -1,35 +1,34 @@
-<agm-map
-  [latitude]="47.283645"
-  [longitude]="39.716100"
-  [ngStyle]="{'height': '300px'}"
-  [fitBounds]="true"
-  [maxZoom]="16"
->
-  <agm-marker
-    *ngFor="let marker of config.markers"
-    [title]="marker.label"
-    [latitude]="marker.lat"
-    [longitude]="marker.lon"
-    [iconUrl]="marker.icon"
-    [agmFitBounds]="true"
-  ></agm-marker>
-
-  <!--<agm-marker-->
-    <!--[latitude]="47.283645"-->
-    <!--[longitude]="39.716100"-->
-    <!--[agmFitBounds]="true"-->
-  <!--&gt;</agm-marker>-->
-
-  <!--<agm-marker
-    [latitude]="47.199231"
-    [longitude]="39.608993"
-    [agmFitBounds]="true"
-  ></agm-marker>
+<fs-map
+    [lat]="43.6426"
+    [lng]="-79.3871"
+    [height]="'400px'"
+    [width]="'100%'"
+    [zoomControl]="true"
+    [scrollwheel]="false"
+    [mapTypeControlOptions]="{ mapTypeIds: [] }"
+    [zoom]="14"
+    [maxZoom]="16">
+  <fs-map-marker
+    *ngFor="let marker of markers"
+    [lat]="marker.lat"
+    [lng]="marker.lng">
+  </fs-map-marker>
+</fs-map>
 
 
-  <agm-marker
-    [latitude]="44.296282"
-    [longitude]="-79.784368"
-    [agmFitBounds]="true"
-  ></agm-marker>-->
-</agm-map>
+<fs-map
+    [lat]="43.6426"
+    [lng]="-79.3871"
+    [height]="'400px'"
+    [width]="'100%'"
+    [zoomControl]="true"
+    [scrollwheel]="false"
+    [mapTypeControlOptions]="{ mapTypeIds: [] }"
+    [zoom]="14"
+    [maxZoom]="16">
+  <fs-map-marker
+    *ngFor="let marker of markers"
+    [lat]="marker.lat"
+    [lng]="marker.lng">
+  </fs-map-marker>
+</fs-map>

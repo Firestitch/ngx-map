@@ -1,33 +1,19 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { ConfigureComponent } from '../configure/configure.componen';
-import { FsExampleComponent } from '@firestitch/example';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 
 @Component({
   selector: 'app-example',
-  templateUrl: 'example.component.html',
-  styleUrls: ['example.component.scss']
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleComponent implements AfterViewInit {
+export class ExampleComponent {
 
-  public config = {
-    markers: [
+  public markers = [
       {
-        lat: '53.366201',
-        lon: '-107.529087',
+        lat: 43.642567,
+        lng: -79.387054,
       },
-      {
-        lat: '53.360392',
-        lon: '-107.511176',
-      }
-    ],
-  };
+    ];
 
-  constructor(private example: FsExampleComponent) {}
-
-  public ngAfterViewInit() {
-    this.example.setConfigureComponent(ConfigureComponent, {
-      config: this.config
-    });
-  }
 }

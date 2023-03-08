@@ -9,7 +9,7 @@ import { FsMessageModule } from '@firestitch/message';
 
 import { ToastrModule } from 'ngx-toastr';
 
-import { FsMapModule } from '@firestitch/package';
+import { FsMapModule } from '@firestitch/map';
 import { FsLabelModule } from '@firestitch/label';
 import { AppMaterialModule } from './material.module';
 import {
@@ -17,7 +17,6 @@ import {
   ExamplesComponent
 } from './components';
 import { AppComponent } from './app.component';
-import { AgmCoreModule } from '@agm/core';
 import { ConfigureComponent } from './components/configure/configure.componen';
 
 const routes: Routes = [
@@ -37,8 +36,8 @@ const routes: Routes = [
     FsLabelModule,
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAoT2RLzCSFUb148F4uLXyAuquAzjcjyGk'
+    FsMapModule.forRoot({
+      googleMapKey: 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE'
     })
   ],
   entryComponents: [
@@ -50,7 +49,6 @@ const routes: Routes = [
     ExampleComponent,
     ConfigureComponent,
   ],
-  providers: []
 })
 export class PlaygroundModule {
 }

@@ -1,27 +1,36 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientJsonpModule } from '@angular/common/http';
 
-// import { FsComponentComponent } from './components/component';
-// import { FsComponentService } from './services';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { FsMapComponent } from './components';
+import { FsMapMarkerDirective } from './directives';
+import { FS_MAP_GOOGLE_MAP_KEY } from './injectors';
+
 
 @NgModule({
   imports: [
     CommonModule,
-  ],
-  exports: [
-  ],
-  entryComponents: [
+
+    GoogleMapsModule,
+    HttpClientJsonpModule,
   ],
   declarations: [
+    FsMapComponent,
+    FsMapMarkerDirective,
   ],
-  providers: [
+  exports: [
+    FsMapComponent,
+    FsMapMarkerDirective,
   ],
 })
 export class FsMapModule {
-  static forRoot(): ModuleWithProviders<FsMapModule> {
+  static forRoot(config: { googleMapKey: string }): ModuleWithProviders<FsMapModule> {
     return {
       ngModule: FsMapModule,
-      // proviyders: [FsComponentService]
+      providers: [
+        { provide: FS_MAP_GOOGLE_MAP_KEY, useValue: config.googleMapKey }
+      ]
     };
   }
 }
