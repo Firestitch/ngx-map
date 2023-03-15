@@ -1,4 +1,4 @@
-import { Input, ChangeDetectionStrategy, Component, OnInit, ContentChildren, QueryList, ViewChild } from '@angular/core';
+import { Input, ChangeDetectionStrategy, Component, ContentChildren, QueryList, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { map, tap, takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { FsMap } from '../../services';
   styleUrls: ['./map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsMapComponent implements OnInit {
+export class FsMapComponent {
 
   @ViewChild(GoogleMap)
   public googleMap: GoogleMap
@@ -45,6 +45,7 @@ export class FsMapComponent implements OnInit {
 
   constructor(
     private _map: FsMap,
+    private _cdRef: ChangeDetectorRef,
   ) {}
 
   public get loaded$() {
@@ -57,17 +58,16 @@ export class FsMapComponent implements OnInit {
   }
 
   public setCenter(lat: number, lng: number): void {
-    this.googleMap.center = new google.maps.LatLng(lat, lng);
+    this.lat = lat;
+    this.lng = lng;
+    this._cdRef.markForCheck();
   }
 
-  public ngOnInit(): void {
+  public get center(): google.maps.LatLng {
+    return new google.maps.LatLng(this.lat, this.lng);
   }
 
   private _initOptions(): void {
-    if(this.lat || this.lng) {    
-      this.options.center = new google.maps.LatLng(this.lat, this.lng);
-    }
-
     if(this.maxZoom) {
       this.options.maxZoom = this.maxZoom;
     }
