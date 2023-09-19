@@ -1,8 +1,8 @@
-import { Input, Directive, OnInit, EventEmitter, Output } from '@angular/core';
+import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 
 @Directive({
-  selector: 'fs-map-marker',  
+  selector: 'fs-map-marker',
 })
 export class FsMapMarkerDirective implements OnInit {
 

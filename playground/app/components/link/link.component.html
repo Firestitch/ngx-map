@@ -1,0 +1,13 @@
+<mat-form-field>
+  <mat-label>Address</mat-label>
+  <input
+    matInput
+    [(ngModel)]="address"
+    name="Address">
+</mat-form-field>
+
+<a 
+    fsMapLink 
+    [address]="address">
+  {{address}}
+</a>

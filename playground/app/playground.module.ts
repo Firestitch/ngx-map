@@ -1,30 +1,32 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
 
 import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
 
 import { ToastrModule } from 'ngx-toastr';
 
-import { FsMapModule, FS_MAP_GOOGLE_MAP_KEY } from '@firestitch/map';
 import { FsLabelModule } from '@firestitch/label';
-import { AppMaterialModule } from './material.module';
-import {
-  ExampleComponent,
-  ExamplesComponent
-} from './components';
+import { FS_MAP_GOOGLE_MAP_KEY, FsMapModule } from '@firestitch/map';
 import { AppComponent } from './app.component';
+import {
+  AddressComponent,
+  ExampleComponent,
+  ExamplesComponent,
+  LinkComponent
+} from './components';
 import { ConfigureComponent } from './components/configure/configure.componen';
+import { AppMaterialModule } from './material.module';
 
 const routes: Routes = [
   { path: '', component: ExamplesComponent },
 ];
 
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     FsMapModule,
@@ -38,9 +40,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
   ],
   providers: [
-    { 
-      provide: FS_MAP_GOOGLE_MAP_KEY, 
-      useFactory: () => 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE' 
+    {
+      provide: FS_MAP_GOOGLE_MAP_KEY,
+      useFactory: () => 'AIzaSyBigr-zo7xG6tqAiAvpqE2Bh4foHVrrSBE'
     },
   ],
   declarations: [
@@ -48,6 +50,8 @@ const routes: Routes = [
     ExamplesComponent,
     ExampleComponent,
     ConfigureComponent,
+    AddressComponent,
+    LinkComponent,
   ],
 })
 export class PlaygroundModule {

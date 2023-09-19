@@ -1,0 +1,18 @@
+<mat-form-field>
+  <mat-label>Address</mat-label>
+  <input
+    matInput
+    [(ngModel)]="address"
+    name="Address">
+</mat-form-field>
+
+<fs-map
+    [address]="address"
+    [height]="'400px'"
+    [width]="'100%'"
+    [zoomControl]="true"
+    [scrollwheel]="false"
+    [mapTypeControlOptions]="{ mapTypeIds: [] }"
+    [zoom]="14"
+    [maxZoom]="16">
+</fs-map>

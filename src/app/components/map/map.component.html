@@ -5,11 +5,16 @@
       [height]="height"
       [center]="center"
       [options]="options">
-    <map-marker 
+      <map-marker 
       *ngFor="let mapMarker of mapMarkers"
       [position]="mapMarker.position"
       [options]="mapMarker.options"
       (mapDragend)="mapMarker.dragEnd.emit($event)">
     </map-marker>
+    <ng-container *ngIf="addressMarker">
+      <map-marker 
+        [position]="addressMarker.position">
+      </map-marker>
+    </ng-container>
   </google-map>
 </div>
