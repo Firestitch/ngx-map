@@ -5,8 +5,8 @@ import { map, take, takeUntil, tap } from 'rxjs/operators';
 
 import { GoogleMap } from '@angular/google-maps';
 
-import { toAddress } from 'src/app/helpers';
 import { FsMapMarkerDirective } from '../../directives';
+import { toAddress } from '../../helpers';
 import { MapAddress } from '../../interfaces';
 import { FsMap } from '../../services';
 
