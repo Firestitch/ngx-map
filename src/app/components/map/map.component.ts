@@ -5,7 +5,9 @@ import { map, take, takeUntil, tap } from 'rxjs/operators';
 
 import { GoogleMap } from '@angular/google-maps';
 
+import { toAddress } from 'src/app/helpers';
 import { FsMapMarkerDirective } from '../../directives';
+import { MapAddress } from '../../interfaces';
 import { FsMap } from '../../services';
 
 
@@ -23,7 +25,7 @@ export class FsMapComponent implements OnChanges {
   @ContentChildren(FsMapMarkerDirective)
   public mapMarkers: QueryList<FsMapMarkerDirective>
 
-  @Input() public address: string;
+  @Input() public address: string | MapAddress;
   @Input() public width: string;
   @Input() public height: string;
   @Input() public lat: number;
@@ -62,8 +64,7 @@ export class FsMapComponent implements OnChanges {
         )
         .subscribe(() => {
           const geocoder = new google.maps.Geocoder();
-
-          geocoder.geocode({ 'address': this.address }, (results, status) => {
+          geocoder.geocode({ 'address': toAddress(this.address) }, (results, status) => {
             if (status == 'OK') {
               const location = results[0]?.geometry?.location;
 

@@ -1,4 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { toAddress } from '../helpers';
+import { MapAddress } from '../interfaces';
 
 
 @Directive({
@@ -7,13 +9,7 @@ import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular
 export class FsMapLinkDirective implements OnChanges {
 
   @Input() public target = '_blank';
-  @Input() public address: string | {
-    street?: string;
-    city?: string;
-    region?: string;
-    zip?: string;
-    country?: string;
-  };
+  @Input() public address: string | MapAddress;
 
   public constructor(
     private _el: ElementRef,
@@ -21,7 +17,7 @@ export class FsMapLinkDirective implements OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.address || changes.target) {
-      const href = `https://www.google.com/maps/search/?api=1&query=${this.address}`;
+      const href = `https://www.google.com/maps/search/?api=1&query=${toAddress(this.address)}`;
       this._el.nativeElement.setAttribute('href', href);
       this._el.nativeElement.setAttribute('target', this.target);
     }
