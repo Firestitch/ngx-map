@@ -6,9 +6,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { FS_MAP_GOOGLE_MAP_KEY } from '../injectors';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FsMap {
 
   private _loaded = false;
