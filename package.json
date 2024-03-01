@@ -2,7 +2,7 @@
   "name": "@firestitch/map",
   "title": "Google Maps",
   "description": "@firestitch/map",
-  "version": "13.0.0",
+  "version": "13.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-map"
@@ -48,7 +48,7 @@
     "@firestitch/autocomplete-chips": "^12.4.3",
     "@firestitch/clear": "^12.2.1",
     "@firestitch/common": "^12.0.0",
-    "@firestitch/component-tools": "^12.0.18",
+    "@firestitch/component-tools": "^13.0.4",
     "@firestitch/core": "^12.0.3",
     "@firestitch/date": "^12.4.1",
     "@firestitch/datepicker": "^12.11.2",

@@ -29,7 +29,7 @@ const routes: Routes = [
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
-    FsMapModule,
+    FsMapModule.forRoot(),
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
