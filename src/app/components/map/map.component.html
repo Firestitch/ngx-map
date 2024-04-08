@@ -1,11 +1,11 @@
 
-<div *ngIf="loaded$ | async">
+<ng-container *ngIf="loaded$ | async">
   <google-map 
       [width]="width"
       [height]="height"
       [center]="center"
       [options]="options">
-      <map-marker 
+    <map-marker 
       *ngFor="let mapMarker of mapMarkers"
       [position]="mapMarker.position"
       [options]="mapMarker.options"
@@ -17,4 +17,4 @@
       </map-marker>
     </ng-container>
   </google-map>
-</div>
+</ng-container>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, QueryList, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { map, take, takeUntil, tap } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { GoogleMap } from '@angular/google-maps';
 
 import { FsMapMarkerDirective } from '../../directives';
 import { toAddress } from '../../helpers';
-import { MapAddress } from '../../interfaces';
+import { FsMapOptions, MapAddress } from '../../interfaces';
 import { FsMap } from '../../services';
 
 
@@ -17,7 +17,7 @@ import { FsMap } from '../../services';
   styleUrls: ['./map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsMapComponent implements OnChanges {
+export class FsMapComponent implements OnChanges, OnInit {
 
   @ViewChild(GoogleMap)
   public googleMap: GoogleMap
@@ -37,7 +37,7 @@ export class FsMapComponent implements OnChanges {
   @Input() public maxZoom: number;
   @Input() public zoom: number;
   @Input() public mapTypeControlOptions: google.maps.MapTypeControlOptions;
-  @Input() public options: google.maps.MapOptions = {};
+  @Input() public options: FsMapOptions = {};
 
   public addressMarker: {
     position: google.maps.LatLng,
@@ -54,6 +54,23 @@ export class FsMapComponent implements OnChanges {
     private _map: FsMap,
     private _cdRef: ChangeDetectorRef,
   ) { }
+
+  public ngOnInit(): void {
+    this._map.loaded$
+      .pipe(
+        take(1),
+        takeUntil(this._destroy$),
+      )
+      .subscribe(() => {
+        setTimeout(() => {
+          Object.keys(this.options?.events || [])
+            .forEach((name) => {
+              const eventName = name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+              this.map.addListener(eventName, this.options.events[name]);
+            });
+        });
+      });
+  }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.address) {
@@ -99,6 +116,10 @@ export class FsMapComponent implements OnChanges {
     return new google.maps.LatLng(this.lat, this.lng);
   }
 
+  public get map(): google.maps.Map {
+    return this.googleMap.googleMap;
+  }
+
   private _initOptions(): void {
     if (this.maxZoom) {
       this.options.maxZoom = this.maxZoom;
@@ -106,12 +127,12 @@ export class FsMapComponent implements OnChanges {
 
     this.options = {
       ...this.options,
-      scrollwheel: this.scrollwheel,
-      streetViewControl: this.streetViewControl,
-      zoomControl: this.zoomControl,
-      zoom: this.zoom,
-      fullscreenControl: this.fullscreenControl,
-      mapTypeControlOptions: this.mapTypeControlOptions,
+      scrollwheel: this.options.scrollwheel ?? this.scrollwheel,
+      streetViewControl: this.options.streetViewControl ?? this.streetViewControl,
+      zoomControl: this.options.zoomControl ?? this.zoomControl,
+      zoom: this.options.zoom ?? this.zoom,
+      fullscreenControl: this.options.fullscreenControl ?? this.fullscreenControl,
+      mapTypeControlOptions: this.options.mapTypeControlOptions ??this.mapTypeControlOptions,
     }
   }
 }
