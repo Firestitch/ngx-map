@@ -39,6 +39,8 @@ export class FsMapComponent implements OnChanges, OnInit {
   @Input() public mapTypeControlOptions: google.maps.MapTypeControlOptions;
   @Input() public options: FsMapOptions = {};
 
+  public loaded = false;
+
   public addressMarker: {
     position: google.maps.LatLng,
   };
@@ -56,20 +58,21 @@ export class FsMapComponent implements OnChanges, OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this._map.loaded$
-      .pipe(
-        take(1),
-        takeUntil(this._destroy$),
-      )
-      .subscribe(() => {
-        setTimeout(() => {
-          Object.keys(this.options?.events || [])
-            .forEach((name) => {
-              const eventName = name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
-              this.map.addListener(eventName, this.options.events[name]);
-            });
+    this.loaded$
+    .pipe(
+      tap(() => this._init()),
+    )
+    .subscribe();
+  }
+
+  public mapInitialized(): void {
+    setTimeout(() => {
+      Object.keys(this.options?.events || [])
+        .forEach((name) => {
+          const eventName = name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+          this.map.addListener(eventName, this.options.events[name]);
         });
-      });
+    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -90,6 +93,7 @@ export class FsMapComponent implements OnChanges, OnInit {
                 this.addressMarker = {
                   position: location
                 };
+                this._cdRef.markForCheck();
               }
             }
           });
@@ -100,8 +104,6 @@ export class FsMapComponent implements OnChanges, OnInit {
   public get loaded$() {
     return this._map.loaded$
       .pipe(
-        tap(() => this._initOptions()),
-        map(() => true),
         takeUntil(this._destroy$),
       );
   }
@@ -120,7 +122,7 @@ export class FsMapComponent implements OnChanges, OnInit {
     return this.googleMap.googleMap;
   }
 
-  private _initOptions(): void {
+  private _init(): void {
     if (this.maxZoom) {
       this.options.maxZoom = this.maxZoom;
     }
@@ -133,6 +135,9 @@ export class FsMapComponent implements OnChanges, OnInit {
       zoom: this.options.zoom ?? this.zoom,
       fullscreenControl: this.options.fullscreenControl ?? this.fullscreenControl,
       mapTypeControlOptions: this.options.mapTypeControlOptions ??this.mapTypeControlOptions,
-    }
+    };
+
+    this.loaded = true;
+    this._cdRef.markForCheck();
   }
 }
