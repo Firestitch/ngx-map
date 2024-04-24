@@ -113,7 +113,7 @@ export class FsMapComponent implements OnChanges, OnInit {
   }
 
   public get center(): google.maps.LatLng {
-    return new google.maps.LatLng(this.lat, this.lng);
+    return this.lat && this.lng ? new google.maps.LatLng(this.lat, this.lng) : null;
   }
 
   public get map(): google.maps.Map {
