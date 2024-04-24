@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { GoogleMap } from '@angular/google-maps';
 import { FsMapComponent } from '@firestitch/map';
+import { FsMapOptions } from 'src/app/interfaces';
 
 
 @Component({
@@ -15,11 +17,19 @@ export class ExampleComponent implements OnInit {
 
   public lat;
   public lng;
+  public options: FsMapOptions;
 
   public markers = [];
 
   public ngOnInit(): void {
     this.setCords(43.642567, -79.387054);
+
+    this.options = {
+      events: {
+        centerChanged: (event) => {
+        }
+      }
+    };
   }
 
   public setCords(lat, lng): void {

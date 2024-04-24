@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { loadJs } from '@firestitch/common';
 
 import { Observable, of, Subject } from 'rxjs';
 
 import { FS_MAP_GOOGLE_MAP_KEY } from '../injectors';
+import { delay } from 'rxjs/operators';
 
 
 @Injectable()
@@ -14,7 +15,6 @@ export class FsMap {
 
   public constructor(
     @Inject(FS_MAP_GOOGLE_MAP_KEY) private _googleMapKey: string,
-    private _httpClient: HttpClient,
   ) { }
 
   public get loaded$(): Observable<any> {
@@ -22,10 +22,13 @@ export class FsMap {
       return of(this._loaded);
     }
 
-    if (!this._loaded$) {
+    if (!this._loaded$) {      
       this._loaded$ = new Subject();
-      this._httpClient
-        .jsonp(`https://maps.googleapis.com/maps/api/js?libraries=places&key=${this._googleMapKey}`, 'callback')
+
+      loadJs(`https://maps.googleapis.com/maps/api/js?libraries=places&loading=async&key=${this._googleMapKey}`)
+      .pipe(
+        delay(0),
+      )
         .subscribe(() => {
           this._loaded = true;
           this._loaded$.next();

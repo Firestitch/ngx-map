@@ -3,16 +3,18 @@
     [lng]="lng"
     [height]="'400px'"
     [width]="'100%'"
+    [options]="options"
     [zoomControl]="true"
     [scrollwheel]="false"
     [mapTypeControlOptions]="{ mapTypeIds: [] }"
     [zoom]="14"
     [maxZoom]="16">
-  <fs-map-marker
-    *ngFor="let marker of markers"
-    [lat]="marker.lat"
-    [lng]="marker.lng">
-  </fs-map-marker>
+  <ng-container *ngFor="let marker of markers">
+    <fs-map-marker    
+      [lat]="marker.lat"
+      [lng]="marker.lng">
+    </fs-map-marker>
+  </ng-container>
 </fs-map>
 
 <br><br>
