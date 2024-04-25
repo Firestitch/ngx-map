@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild } from '@angular/core';
 
 import { Subject } from 'rxjs';
-import { map, take, takeUntil, tap } from 'rxjs/operators';
+import { take, takeUntil, tap } from 'rxjs/operators';
 
 import { GoogleMap } from '@angular/google-maps';
 
@@ -17,7 +17,7 @@ import { FsMap } from '../../services';
   styleUrls: ['./map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsMapComponent implements OnChanges, OnInit {
+export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
 
   @ViewChild(GoogleMap)
   public googleMap: GoogleMap
@@ -59,10 +59,20 @@ export class FsMapComponent implements OnChanges, OnInit {
 
   public ngOnInit(): void {
     this.loaded$
-    .pipe(
-      tap(() => this._init()),
-    )
-    .subscribe();
+      .pipe(
+        tap(() => this._init()),
+      )
+      .subscribe();
+  }
+
+  public ngAfterContentInit(): void {
+    this.mapMarkers.changes
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe(() => {
+        this._cdRef.markForCheck();
+      });
   }
 
   public mapInitialized(): void {
@@ -134,7 +144,7 @@ export class FsMapComponent implements OnChanges, OnInit {
       zoomControl: this.options.zoomControl ?? this.zoomControl,
       zoom: this.options.zoom ?? this.zoom,
       fullscreenControl: this.options.fullscreenControl ?? this.fullscreenControl,
-      mapTypeControlOptions: this.options.mapTypeControlOptions ??this.mapTypeControlOptions,
+      mapTypeControlOptions: this.options.mapTypeControlOptions ?? this.mapTypeControlOptions,
     };
 
     this.loaded = true;

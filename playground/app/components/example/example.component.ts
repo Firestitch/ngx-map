@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { GoogleMap } from '@angular/google-maps';
 import { FsMapComponent } from '@firestitch/map';
 import { FsMapOptions } from 'src/app/interfaces';
 
@@ -52,8 +51,8 @@ export class ExampleComponent implements OnInit {
       [41.385308996934, -75.518567628843],
       [45.385338884002, -92.62606958483],
     ]
-    .filter((cord) => this.lat !== cord[0]);
-    
+      .filter((cord) => this.lat !== cord[0]);
+
     const cord = cords[Math.floor(Math.random() * cords.length)];
     this.map.setCenter(cord[0], cord[1]);
   }
