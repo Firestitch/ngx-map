@@ -7,7 +7,9 @@ import { FS_MAP_GOOGLE_MAP_KEY } from '../injectors';
 import { delay } from 'rxjs/operators';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class FsMap {
 
   private _loaded = false;
