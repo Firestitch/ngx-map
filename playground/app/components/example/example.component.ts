@@ -38,6 +38,9 @@ export class ExampleComponent implements OnInit {
       {
         lat: this.lat,
         lng: this.lng,
+        options: {
+          icon: '/assets/home.svg',
+        }
       },
     ];
   }

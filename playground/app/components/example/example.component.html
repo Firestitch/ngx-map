@@ -11,6 +11,7 @@
     [maxZoom]="16">
   <ng-container *ngFor="let marker of markers">
     <fs-map-marker    
+      [options]="marker.options"
       [lat]="marker.lat"
       [lng]="marker.lng">
     </fs-map-marker>
