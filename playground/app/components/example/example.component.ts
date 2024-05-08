@@ -18,7 +18,11 @@ export class ExampleComponent implements OnInit {
   public lng;
   public options: FsMapOptions;
 
-  public markers = [];
+  public markers: {
+    lat: number,
+    lng: number, 
+    options: google.maps.MarkerOptions,
+  }[] = [];
 
   public ngOnInit(): void {
     this.setCords(43.642567, -79.387054);
@@ -40,6 +44,10 @@ export class ExampleComponent implements OnInit {
         lng: this.lng,
         options: {
           icon: '/assets/home.svg',
+          label: {
+            text: 'Home',
+            className: 'home',
+          }
         }
       },
     ];

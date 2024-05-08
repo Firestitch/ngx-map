@@ -14,7 +14,9 @@ export class FsMapMarkerDirective implements OnInit {
   @Output() public dragEnd = new EventEmitter<google.maps.MapMouseEvent>();
 
   public ngOnInit(): void {
-    this.options.label = this.label;
+    if(this.label) {
+      this.options.label = this.label;
+    }
   }
 
   public get position(): google.maps.LatLng {
