@@ -19,7 +19,7 @@ import { guid } from '@firestitch/common';
 })
 export class FsMapComponent implements OnChanges, OnInit {
 
-  @ViewChild('mapEl', { read: ElementRef })
+  @ViewChild('mapEl', { read: ElementRef, static: true })
   public mapEl: ElementRef
 
   @ContentChildren(FsMapMarkerDirective)
