@@ -1,21 +1,6 @@
 
-<ng-container *ngIf="loaded">
-  <google-map 
-      [width]="width"
-      [height]="height"
-      [center]="center"
-      [options]="options"
-      (mapInitialized)="mapInitialized()">
-    <map-marker 
-      *ngFor="let mapMarker of mapMarkers"
-      [position]="mapMarker.position"
-      [options]="mapMarker.options"
-      (mapDragend)="mapMarker.dragEnd.emit($event)">
-    </map-marker>
-    <ng-container *ngIf="addressMarker">
-      <map-marker 
-        [position]="addressMarker.position">
-      </map-marker>
-    </ng-container>
-  </google-map>
-</ng-container>
+<div 
+  #mapEl 
+  [style.height]="height"
+  [style.width]="width">
+</div>

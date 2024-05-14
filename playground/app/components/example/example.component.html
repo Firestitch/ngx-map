@@ -11,9 +11,16 @@
     [maxZoom]="16">
   <ng-container *ngFor="let marker of markers">
     <fs-map-marker    
-      [options]="marker.options"
-      [lat]="marker.lat"
-      [lng]="marker.lng">
+        [options]="{}"
+        (click)="markerClick()"
+        [lat]="marker.lat"
+        [lng]="marker.lng">
+      <div class="marker">
+        <a>
+          <mat-icon>home</mat-icon>
+          <div>Home</div>
+        </a>
+      </div>
     </fs-map-marker>
   </ng-container>
 </fs-map>

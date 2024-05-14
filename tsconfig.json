@@ -2,8 +2,12 @@
   "extends": "./node_modules/@firestitch/component-tools/config/tsconfig.cli.json",
   "compilerOptions": {
     "types": [
-      "googlemaps",
+      "google.maps",
     ],
+    "typeRoots": [
+      "node_modules/@types",
+    ],
+    "skipLibCheck": true,
     "paths": {
       "@firestitch/map": [
         "src/public_api.ts"

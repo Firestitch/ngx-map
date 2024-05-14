@@ -1,14 +1,14 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
-
-import { GoogleMap } from '@angular/google-maps';
 
 import { FsMapMarkerDirective } from '../../directives';
 import { toAddress } from '../../helpers';
 import { FsMapOptions, MapAddress } from '../../interfaces';
 import { FsMap } from '../../services';
+import { ElementRef } from '@angular/core';
+import { guid } from '@firestitch/common';
 
 
 @Component({
@@ -17,17 +17,17 @@ import { FsMap } from '../../services';
   styleUrls: ['./map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
+export class FsMapComponent implements OnChanges, OnInit {
 
-  @ViewChild(GoogleMap)
-  public googleMap: GoogleMap
+  @ViewChild('mapEl', { read: ElementRef })
+  public mapEl: ElementRef
 
   @ContentChildren(FsMapMarkerDirective)
   public mapMarkers: QueryList<FsMapMarkerDirective>
 
   @Input() public address: string | MapAddress;
-  @Input() public width: string;
-  @Input() public height: string;
+  @Input() public width: string = '100%';
+  @Input() public height: string = '400px';
   @Input() public lat: number;
   @Input() public lng: number;
   @Input() public scrollwheel = true;
@@ -39,18 +39,13 @@ export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
   @Input() public mapTypeControlOptions: google.maps.MapTypeControlOptions;
   @Input() public options: FsMapOptions = {};
 
-  public loaded = false;
+  public map: google.maps.Map;
 
   public addressMarker: {
     position: google.maps.LatLng,
   };
 
   private _destroy$ = new Subject();
-
-  public ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
 
   public constructor(
     private _map: FsMap,
@@ -63,16 +58,6 @@ export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
         tap(() => this._init()),
       )
       .subscribe();
-  }
-
-  public ngAfterContentInit(): void {
-    this.mapMarkers.changes
-      .pipe(
-        takeUntil(this._destroy$),
-      )
-      .subscribe(() => {
-        this._cdRef.markForCheck();
-      });
   }
 
   public mapInitialized(): void {
@@ -121,15 +106,16 @@ export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
   public setCenter(lat: number, lng: number): void {
     this.lat = lat;
     this.lng = lng;
-    this._cdRef.markForCheck();
+    this.map.setCenter(this.center);
   }
 
   public get center(): google.maps.LatLng {
     return this.lat && this.lng ? new google.maps.LatLng(this.lat, this.lng) : null;
   }
 
-  public get map(): google.maps.Map {
-    return this.googleMap.googleMap;
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   private _init(): void {
@@ -138,6 +124,7 @@ export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
     }
 
     this.options = {
+      mapId: guid(),
       ...this.options,
       scrollwheel: this.options.scrollwheel ?? this.scrollwheel,
       streetViewControl: this.options.streetViewControl ?? this.streetViewControl,
@@ -147,7 +134,47 @@ export class FsMapComponent implements OnChanges, OnInit, AfterContentInit {
       mapTypeControlOptions: this.options.mapTypeControlOptions ?? this.mapTypeControlOptions,
     };
 
-    this.loaded = true;
-    this._cdRef.markForCheck();
+    if(this.center) {
+      this.options.center = this.center;
+    }
+
+    this.map = new google.maps.Map(this.mapEl.nativeElement as HTMLElement, this.options);
+    this._initEvents();
+  }
+  
+  private _initEvents():void {
+    if(this.options.events) {
+      [
+        'boundsChanged',
+        'centerChanged',
+        'click',
+        'contextmenu',
+        'dblclick',
+        'drag',
+        'dragend',
+        'dragstart',
+        'headingChanged',
+        'idle',
+        'maptypeidChanged',
+        'mousemove',
+        'mouseout',
+        'mouseover',
+        'projectionChanged',
+        'resize',
+        'rightclick',
+        'tilesloaded',
+        'tiltChanged',
+        'zoomChanged',
+      ]
+        .filter((name) => !!this.options.events[name])
+        .forEach((name) => {
+          var result = name.replace( /([A-Z])/g," $1");
+          const eventName = result.split(' ').join('_').toLowerCase()
+
+          this.map.addListener(eventName, (event) => {
+            this.options.events[name](event)
+          });
+        });
+    }
   }
 }

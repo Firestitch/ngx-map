@@ -27,7 +27,7 @@ export class FsMap {
     if (!this._loaded$) {      
       this._loaded$ = new Subject();
 
-      loadJs(`https://maps.googleapis.com/maps/api/js?libraries=places&loading=async&key=${this._googleMapKey}`)
+      loadJs(`https://maps.googleapis.com/maps/api/js?libraries=places,marker&loading=async&key=${this._googleMapKey}`)
       .pipe(
         delay(0),
       )
