@@ -26,6 +26,12 @@ export class ExampleComponent implements OnInit {
     options?: google.maps.marker.AdvancedMarkerElementOptions,
   };
 
+  public markerIcon: {
+    lat: number,
+    lng: number, 
+    options?: google.maps.marker.AdvancedMarkerElementOptions,
+  };
+
   public ngOnInit(): void {
     this.setCords(43.642567, -79.387054);
 
@@ -46,8 +52,12 @@ export class ExampleComponent implements OnInit {
     this.lat = 43.642567;
     this.lng = -79.387054;
     this.marker = {
-        lat: this.lat,
-        lng: this.lng,
+        lat,
+        lng,
+      };
+    this.markerIcon = {
+        lat: lat + .006,
+        lng: lng,
       };
   }
 
@@ -63,6 +73,7 @@ export class ExampleComponent implements OnInit {
       .filter((cord) => this.lat !== cord[0]);
 
     const cord = cords[Math.floor(Math.random() * cords.length)];
+    this.setCords(cord[0], cord[1]);
     this.map.setCenter(cord[0], cord[1]);
   }
 

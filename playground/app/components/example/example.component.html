@@ -10,10 +10,20 @@
     [zoom]="14"
     [maxZoom]="16">
   <fs-map-marker    
-      [options]="{}"
       (click)="markerClick()"
       [lat]="marker.lat"
       [lng]="marker.lng">
+    <div class="marker">
+      <a>
+        <mat-icon>home</mat-icon>
+        <div>Home</div>
+      </a>
+    </div>
+  </fs-map-marker>
+  <fs-map-marker    
+      (click)="markerClick()"
+      [lat]="markerIcon.lat"
+      [lng]="markerIcon.lng">
   </fs-map-marker>
 </fs-map>
 
