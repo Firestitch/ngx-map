@@ -22,9 +22,6 @@ export class FsMapComponent implements OnChanges, OnInit {
   @ViewChild('mapEl', { read: ElementRef, static: true })
   public mapEl: ElementRef
 
-  @ContentChildren(FsMapMarkerDirective)
-  public mapMarkers: QueryList<FsMapMarkerDirective>
-
   @Input() public address: string | MapAddress;
   @Input() public width: string = '100%';
   @Input() public height: string = '400px';

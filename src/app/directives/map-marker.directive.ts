@@ -13,8 +13,13 @@ export class FsMapMarkerDirective implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event']) 
   onClick(event) {
-    event.preventDefault();
-    event.stopPropagation();
+    if(event.domEvent) {
+      event.domEvent.preventDefault();
+      event.domEvent.stopPropagation();
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+    }    
   }
 
   @Input() public options: FsMapMarkerOptions = {};
@@ -42,10 +47,12 @@ export class FsMapMarkerDirective implements OnInit, OnDestroy {
       takeUntil(this._destroy$),
     )
     .subscribe(() => {
+      const content = this._el.nativeElement.innerText ? this._el.nativeElement : null;
+
       this.advancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
         ...this.options,
         map: this._map.map,
-        content: this._el.nativeElement,
+        content: content,
         position: {
           lat: this.lat,
           lng: this.lng,

@@ -20,15 +20,11 @@ export class ExampleComponent implements OnInit {
 
   public date;
 
-  public markers: {
+  public marker: {
     lat: number,
     lng: number, 
     options?: google.maps.marker.AdvancedMarkerElementOptions,
-  }[] = [];
-
-  public constructor(
-    private _cdRef: ChangeDetectorRef,
-  ) {}
+  };
 
   public ngOnInit(): void {
     this.setCords(43.642567, -79.387054);
@@ -49,12 +45,10 @@ export class ExampleComponent implements OnInit {
   public setCords(lat, lng): void {
     this.lat = 43.642567;
     this.lng = -79.387054;
-    this.markers = [
-      {
+    this.marker = {
         lat: this.lat,
         lng: this.lng,
-      },
-    ];
+      };
   }
 
   public center() {

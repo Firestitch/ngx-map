@@ -9,20 +9,12 @@
     [mapTypeControlOptions]="{ mapTypeIds: [] }"
     [zoom]="14"
     [maxZoom]="16">
-  <ng-container *ngFor="let marker of markers">
-    <fs-map-marker    
-        [options]="{}"
-        (click)="markerClick()"
-        [lat]="marker.lat"
-        [lng]="marker.lng">
-      <div class="marker">
-        <a>
-          <mat-icon>home</mat-icon>
-          <div>Home</div>
-        </a>
-      </div>
-    </fs-map-marker>
-  </ng-container>
+  <fs-map-marker    
+      [options]="{}"
+      (click)="markerClick()"
+      [lat]="marker.lat"
+      [lng]="marker.lng">
+  </fs-map-marker>
 </fs-map>
 
 <br><br>
