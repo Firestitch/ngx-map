@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+
 import { FsMapComponent } from '@firestitch/map';
+
 import { FsMapOptions } from 'src/app/interfaces';
 
 
@@ -31,16 +33,26 @@ export class ExampleComponent implements OnInit {
     lng: number, 
     options?: google.maps.marker.AdvancedMarkerElementOptions,
   };
-
+  
+  constructor(
+    private _cdRef: ChangeDetectorRef,
+  ) {}
+  
   public ngOnInit(): void {
-    this.setCords(43.642567, -79.387054);
+    this.lat = 43.642567;
+    this.lng = -79.387054;
+    
+    setTimeout(() => {
+      this.setCords(this.lat, this.lng);
+      this._cdRef.markForCheck();
+    }, 2000);
 
     this.options = {
       events: {
         centerChanged: (event) => {
           console.log('centerChanged', event);
-        }
-      }
+        },
+      },
     };
   }
 
@@ -48,17 +60,15 @@ export class ExampleComponent implements OnInit {
     console.log('Marker clicked');
   }
 
-  public setCords(lat, lng): void {
-    this.lat = 43.642567;
-    this.lng = -79.387054;
+  public setCords(lat: number, lng: number): void {
     this.marker = {
-        lat,
-        lng,
-      };
+      lat,
+      lng,
+    };
     this.markerIcon = {
-        lat: lat + .006,
-        lng: lng,
-      };
+      lat: lat + .006,
+      lng: lng,
+    };
   }
 
   public center() {

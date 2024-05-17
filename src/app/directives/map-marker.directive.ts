@@ -1,26 +1,22 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FsMapComponent } from '../components';
-import { FsMap } from '../services';
+import {
+  AfterContentInit,
+  Directive, ElementRef, EventEmitter, HostListener,
+  Input, OnChanges, OnDestroy,
+  Output, SimpleChanges,
+} from '@angular/core';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { FsMapComponent } from '../components';
 import { FsMapMarkerOptions } from '../interfaces';
+import { FsMap } from '../services';
 
 
 @Directive({
   selector: 'fs-map-marker',
 })
-export class FsMapMarkerDirective implements OnInit, OnDestroy, OnChanges {
-
-  @HostListener('click', ['$event']) 
-  onClick(event) {
-    if(event.domEvent) {
-      event.domEvent.preventDefault();
-      event.domEvent.stopPropagation();
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
-    }    
-  }
+export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentInit {
 
   @Input() public options: FsMapMarkerOptions = {};
   @Input() public lat: number;
@@ -36,29 +32,40 @@ export class FsMapMarkerDirective implements OnInit, OnDestroy, OnChanges {
 
   private _destroy$ = new Subject();
 
-  public constructor(
+  constructor(
     private _el: ElementRef,
     private _map: FsMapComponent,
     private _mapService: FsMap,
   ) {}
 
+  @HostListener('click', ['$event']) 
+  public onClick(event) {
+    if(event.domEvent) {
+      event.domEvent.preventDefault();
+      event.domEvent.stopPropagation();
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+    }    
+  }
+
   public ngOnChanges(changes: SimpleChanges): void {
     if(
-        (changes.lat && !changes.lat.firstChange) || 
-        (changes.lng && !changes.lng.firstChange)
+      (changes.lat && !changes.lat.firstChange) || 
+      (changes.lng && !changes.lng.firstChange)
     ) {
       this._createMarker();
     }
   }
 
-  public ngOnInit(): void {
+  public ngAfterContentInit(): void {
     this._mapService.loaded$
-    .pipe(
-      takeUntil(this._destroy$),
-    )
-    .subscribe(() => {
-      this._createMarker();
-    });
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe(() => {
+        this._createMarker();
+      });
   }
   
   public ngOnDestroy(): void {
@@ -72,7 +79,7 @@ export class FsMapMarkerDirective implements OnInit, OnDestroy, OnChanges {
   }
 
   private _createMarker(): void {
-    const content = this._el.nativeElement.innerText ? this._el.nativeElement : null;
+    const content = this._el.nativeElement.innerHTML ? this._el.nativeElement : null;
 
     if(this.advancedMarkerElement) {
       this.advancedMarkerElement.content = content;
