@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+
+import { guid } from '@firestitch/common';
 
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
 
-import { FsMapMarkerDirective } from '../../directives';
 import { toAddress } from '../../helpers';
 import { FsMapOptions, MapAddress } from '../../interfaces';
 import { FsMap } from '../../services';
-import { ElementRef } from '@angular/core';
-import { guid } from '@firestitch/common';
 
 
 @Component({
@@ -20,7 +19,7 @@ import { guid } from '@firestitch/common';
 export class FsMapComponent implements OnChanges, OnInit {
 
   @ViewChild('mapEl', { read: ElementRef, static: true })
-  public mapEl: ElementRef
+  public mapEl: ElementRef;
 
   @Input() public address: string | MapAddress;
   @Input() public width: string = '100%';
@@ -44,7 +43,7 @@ export class FsMapComponent implements OnChanges, OnInit {
 
   private _destroy$ = new Subject();
 
-  public constructor(
+  constructor(
     private _map: FsMap,
     private _cdRef: ChangeDetectorRef,
   ) { }
@@ -83,7 +82,7 @@ export class FsMapComponent implements OnChanges, OnInit {
               if (location) {
                 this.setCenter(location.lat(), location.lng());
                 this.addressMarker = {
-                  position: location
+                  position: location,
                 };
                 this._cdRef.markForCheck();
               }
@@ -165,11 +164,11 @@ export class FsMapComponent implements OnChanges, OnInit {
       ]
         .filter((name) => !!this.options.events[name])
         .forEach((name) => {
-          var result = name.replace( /([A-Z])/g," $1");
-          const eventName = result.split(' ').join('_').toLowerCase()
+          const result = name.replace( /([A-Z])/g,' $1');
+          const eventName = result.split(' ').join('_').toLowerCase();
 
           this.map.addListener(eventName, (event) => {
-            this.options.events[name](event)
+            this.options.events[name](event);
           });
         });
     }

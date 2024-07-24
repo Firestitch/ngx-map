@@ -2,7 +2,7 @@
   "name": "@firestitch/map",
   "title": "Google Maps",
   "description": "@firestitch/map",
-  "version": "14.2.6",
+  "version": "14.2.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-map"
