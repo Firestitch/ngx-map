@@ -79,6 +79,10 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
   }
 
   private _createMarker(): void {
+    if(!this.lat || !this.lng) {
+      return;
+    }
+
     const content = this._el.nativeElement.innerHTML ? this._el.nativeElement : null;
 
     if(this.advancedMarkerElement) {
