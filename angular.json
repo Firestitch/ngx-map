@@ -31,7 +31,12 @@
               "highlight.js",
               "date-fns-tz",
               "date-fns"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/"
+              ]
+            }
           },
           "configurations": {
             "production": {
