@@ -38,7 +38,7 @@ export class FsMap {
         )
         .subscribe(() => {
           this._loaded = true;
-          this._loaded$.next();
+          this._loaded$.next(null);
           this._loaded$.complete();
         });
     }
