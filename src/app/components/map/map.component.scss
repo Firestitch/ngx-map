@@ -3,3 +3,12 @@
     outline: none;
   }
 }
+
+:host {
+  display: block;
+
+  div {
+    height: 100%;
+    width: 100%;
+  }
+}

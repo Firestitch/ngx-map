@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 
 import { guid } from '@firestitch/common';
 
@@ -16,23 +16,32 @@ import { FsMap } from '../../services';
   styleUrls: ['./map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsMapComponent implements OnChanges, OnInit {
+export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
+
+  @Input() 
+  @HostBinding('style.height')
+  public height: string = '400px';
+
+  @Input() 
+  @HostBinding('style.width')
+  public width: string = '100%';
 
   @ViewChild('mapEl', { read: ElementRef, static: true })
   public mapEl: ElementRef;
 
   @Input() public address: string | MapAddress;
-  @Input() public width: string = '100%';
-  @Input() public height: string = '400px';
   @Input() public lat: number;
   @Input() public lng: number;
   @Input() public scrollwheel = true;
   @Input() public fullscreenControl = false;
+  @Input() public gestureHandling: 'cooperative' | 'greedy' | 'none' | 'auto' | null = 'none';
   @Input() public streetViewControl = false;
-  @Input() public zoomControl = true;
+  @Input() public mapTypeControl = false;
+  @Input() public zoomControl = false;
+  @Input() public cameraControl = false;
   @Input() public maxZoom: number;
   @Input() public zoom: number;
-  @Input() public mapTypeControlOptions: google.maps.MapTypeControlOptions;
+  @Input() public mapTypeControlOptions: google.maps.MapTypeControlOptions | null = null;
   @Input() public options: FsMapOptions = {};
 
   public map: google.maps.Map;
@@ -76,7 +85,7 @@ export class FsMapComponent implements OnChanges, OnInit {
         .subscribe(() => {
           const geocoder = new google.maps.Geocoder();
           geocoder.geocode({ 'address': toAddress(this.address) }, (results, status) => {
-            if (status == 'OK') {
+            if (String(status) === 'OK') {
               const location = results[0]?.geometry?.location;
 
               if (location) {
@@ -125,9 +134,12 @@ export class FsMapComponent implements OnChanges, OnInit {
       scrollwheel: this.options.scrollwheel ?? this.scrollwheel,
       streetViewControl: this.options.streetViewControl ?? this.streetViewControl,
       zoomControl: this.options.zoomControl ?? this.zoomControl,
+      cameraControl: this.options.cameraControl ?? this.cameraControl,
       zoom: this.options.zoom ?? this.zoom,
       fullscreenControl: this.options.fullscreenControl ?? this.fullscreenControl,
+      mapTypeControl: this.options.mapTypeControl ?? this.mapTypeControl,
       mapTypeControlOptions: this.options.mapTypeControlOptions ?? this.mapTypeControlOptions,
+      gestureHandling: this.options.gestureHandling ?? this.gestureHandling,
     };
 
     if(this.center) {
