@@ -1,6 +1,12 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, Input, OnInit, ViewChild,
+  AfterViewInit,
+  ChangeDetectionStrategy, Component, DestroyRef, ElementRef, HostBinding, inject, Input,
+  ViewChild,
 } from '@angular/core';
+
+import { debounceTime, Observable } from 'rxjs';
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { FS_MAP_GOOGLE_MAP_KEY } from '../../injectors';
 import { FsMapOptions, MapAddress } from '../../interfaces';
@@ -12,7 +18,7 @@ import { FsMapOptions, MapAddress } from '../../interfaces';
   styleUrls: ['./map-static.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsMapStaticComponent implements OnInit {
+export class FsMapStaticComponent implements AfterViewInit {
 
   @Input() 
   @HostBinding('style.height')
@@ -38,9 +44,29 @@ export class FsMapStaticComponent implements OnInit {
   public map: google.maps.Map;
 
   private _googleMapKey = inject(FS_MAP_GOOGLE_MAP_KEY);
+  private _destroyRef = inject(DestroyRef);
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     this.drawWallpaper();
+
+    const size$ = new Observable((subscriber) => {
+      const ro = new ResizeObserver(() => {
+        subscriber.next();
+      });
+      
+      ro.observe(this.mapEl.nativeElement);
+
+      return () => ro.disconnect();
+    });
+
+    size$
+      .pipe(
+        debounceTime(100),
+        takeUntilDestroyed(this._destroyRef),
+      )
+      .subscribe(() => {
+        this.drawWallpaper();
+      });
   }
 
   /**
@@ -57,11 +83,12 @@ export class FsMapStaticComponent implements OnInit {
   }
 
   public drawWallpaper() {
-    this.mapEl.nativeElement.innerHTML = ''; // clear any previous tiles
+    const mapEl = this.mapEl.nativeElement;
+    mapEl.innerHTML = ''; // clear any previous tiles
 
     const tileSize = 256;
-    const cols = Math.ceil(window.innerWidth  / tileSize) + 2; // +2 for overscan
-    const rows = Math.ceil(window.innerHeight / tileSize) + 2;
+    const cols = Math.ceil(mapEl.offsetWidth  / tileSize) + 2; // +2 for overscan
+    const rows = Math.ceil(mapEl.offsetHeight / tileSize) + 2;
 
     // Centre tile’s fractional position
     const centre = this.latLngToTileXY(this.lat, this.lng, this.zoom);
