@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, Input, OnInit, ViewChild,
+} from '@angular/core';
 
-
-import { FS_MAP_GOOGLE_MAP_KEY } from 'src/app/injectors';
-
+import { FS_MAP_GOOGLE_MAP_KEY } from '../../injectors';
 import { FsMapOptions, MapAddress } from '../../interfaces';
 
 
@@ -36,10 +36,6 @@ export class FsMapStaticComponent implements OnInit {
   @Input() public options: FsMapOptions = {};
 
   public map: google.maps.Map;
-
-  public addressMarker: {
-    position: google.maps.LatLng,
-  };
 
   private _googleMapKey = inject(FS_MAP_GOOGLE_MAP_KEY);
 
