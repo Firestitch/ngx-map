@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DrawerRef, DRAWER_DATA, DrawerDataProxy } from '@firestitch/drawer';
 import { FsLabelModule } from '@firestitch/label';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,9 @@ import { MatButton } from '@angular/material/button';
     imports: [FsLabelModule, FormsModule, MatFormField, MatInput, MatButton]
 })
 export class ConfigureComponent {
+  drawer = inject<DrawerRef<ConfigureComponent>>(DrawerRef);
+  data = inject<DrawerDataProxy<any>>(DRAWER_DATA);
+
   public config;
 
   public marker = {
@@ -23,8 +26,9 @@ export class ConfigureComponent {
     icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
   };
 
-  constructor(public drawer: DrawerRef<ConfigureComponent>,
-              @Inject(DRAWER_DATA) public data: DrawerDataProxy<any>) {
+  constructor() {
+    const data = this.data;
+
     this.config = data.config;
   }
 

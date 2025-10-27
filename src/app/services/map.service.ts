@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { loadJs } from '@firestitch/common';
 
@@ -12,13 +12,11 @@ import { FS_MAP_GOOGLE_MAP_KEY } from '../injectors';
   providedIn: 'root',
 })
 export class FsMap {
+  private _googleMapKey = inject(FS_MAP_GOOGLE_MAP_KEY);
+
 
   private _loaded = false;
   private _loaded$: Subject<any>;
-
-  constructor(
-    @Inject(FS_MAP_GOOGLE_MAP_KEY) private _googleMapKey: string,
-  ) { }
 
   public get loaded$(): Observable<any> {
     if (this._loaded) {

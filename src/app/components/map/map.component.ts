@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
 
 import { guid } from '@firestitch/common';
 
@@ -18,6 +18,9 @@ import { FsMap } from '../../services';
     standalone: true,
 })
 export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
+  private _map = inject(FsMap);
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @Input() 
   @HostBinding('style.height')
@@ -52,11 +55,6 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
   };
 
   private _destroy$ = new Subject();
-
-  constructor(
-    private _map: FsMap,
-    private _cdRef: ChangeDetectorRef,
-  ) { }
 
   public ngOnInit(): void {
     this.loaded$

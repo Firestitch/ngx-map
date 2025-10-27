@@ -1,9 +1,4 @@
-import {
-  AfterContentInit,
-  Directive, ElementRef, EventEmitter, HostListener,
-  Input, OnChanges, OnDestroy,
-  Output, SimpleChanges,
-} from '@angular/core';
+import { AfterContentInit, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,6 +13,10 @@ import { FsMap } from '../services';
     standalone: true,
 })
 export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentInit {
+  private _el = inject(ElementRef);
+  private _map = inject(FsMapComponent);
+  private _mapService = inject(FsMap);
+
 
   @Input() public options: FsMapMarkerOptions = {};
   @Input() public lat: number;
@@ -32,12 +31,6 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
   public advancedMarkerElement: google.maps.marker.AdvancedMarkerElement;
 
   private _destroy$ = new Subject();
-
-  constructor(
-    private _el: ElementRef,
-    private _map: FsMapComponent,
-    private _mapService: FsMap,
-  ) {}
 
   @HostListener('click', ['$event']) 
   public onClick(event) {

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 
 import { toAddress } from '../helpers';
 import { MapAddress } from '../interfaces';
@@ -9,15 +9,13 @@ import { MapAddress } from '../interfaces';
     standalone: true,
 })
 export class FsMapLinkDirective implements OnChanges {
+  private _el = inject(ElementRef);
+
 
   @Input() public target = '_blank';
   @Input() public address: string | MapAddress;
   @Input() public lat: number;
   @Input() public lng: number;
-
-  constructor(
-    private _el: ElementRef,
-  ) { }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.address || changes.target || changes.lng || changes.lat) {

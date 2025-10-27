@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 
 import { FsMapComponent } from '@firestitch/map';
 
@@ -23,6 +23,8 @@ import { MatButton } from '@angular/material/button';
     ],
 })
 export class ExampleComponent implements OnInit {
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @ViewChild(FsMapComponent)
   public map: FsMapComponent;
@@ -44,10 +46,6 @@ export class ExampleComponent implements OnInit {
     lng: number, 
     options?: google.maps.marker.AdvancedMarkerElementOptions,
   };
-  
-  constructor(
-    private _cdRef: ChangeDetectorRef,
-  ) {}
   
   public ngOnInit(): void {
     this.lat = 43.642567;
