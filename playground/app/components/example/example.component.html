@@ -1,16 +1,16 @@
 <fs-map
-    [lat]="lat"
-    [lng]="lng"
-    [height]="'400px'"
-    [width]="'100%'"
-    [options]="options"
-    [zoom]="14"
-    [maxZoom]="16">
-  <ng-container *ngIf="marker">
+  [lat]="lat"
+  [lng]="lng"
+  [height]="'400px'"
+  [width]="'100%'"
+  [options]="options"
+  [zoom]="14"
+  [maxZoom]="16">
+  @if (marker) {
     <fs-map-marker
-        (click)="markerClick()"
-        [lat]="marker.lat"
-        [lng]="marker.lng">
+      (click)="markerClick()"
+      [lat]="marker.lat"
+      [lng]="marker.lng">
       <div class="marker">
         <a>
           <mat-icon>
@@ -22,20 +22,20 @@
         </a>
       </div>
     </fs-map-marker>
-  </ng-container>
-  <ng-container *ngIf="marker">
+  }
+  @if (marker) {
     <fs-map-marker
       (click)="markerClick()"
       [lat]="markerIcon.lat"
       [lng]="markerIcon.lng">
     </fs-map-marker>
-  </ng-container>
+  }
 </fs-map>
 <br>
-<br>
-<button
-    mat-raised-button
-    type="button"
-    (click)="center()">
-  Random Recenter Map
-</button>
+  <br>
+    <button
+      mat-raised-button
+      type="button"
+      (click)="center()">
+      Random Recenter Map
+    </button>

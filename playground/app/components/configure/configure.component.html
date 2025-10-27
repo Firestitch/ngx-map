@@ -5,31 +5,33 @@
   <div fxLayout="column">
 
     <fs-label>Markers</fs-label>
-    <div *ngFor="let marker of config.markers">
-      [{{marker.lat}}, {{marker.lon}}] <a (click)="removeMarker(marker)">[x]</a>
-    </div>
+    @for (marker of config.markers; track marker) {
+      <div>
+        [{{marker.lat}}, {{marker.lon}}] <a (click)="removeMarker(marker)">[x]</a>
+      </div>
+    }
 
     <fs-label>New Marker</fs-label>
 
     <form (ngSubmit)="add()">
       <mat-form-field>
         <input matInput
-               placeholder="Latitude"
-               name="latitude"
-               type="number"
-               [(ngModel)]="marker.lat"
-               required
-        >
+          placeholder="Latitude"
+          name="latitude"
+          type="number"
+          [(ngModel)]="marker.lat"
+          required
+          >
       </mat-form-field>
 
       <mat-form-field>
         <input matInput
-               placeholder="Longitude"
-               name="longitude"
-               type="number"
-               [(ngModel)]="marker.lon"
-               required
-        >
+          placeholder="Longitude"
+          name="longitude"
+          type="number"
+          [(ngModel)]="marker.lon"
+          required
+          >
       </mat-form-field>
 
       <mat-form-field>
