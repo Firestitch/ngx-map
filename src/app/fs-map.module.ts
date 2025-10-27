@@ -7,21 +7,20 @@ import { FsMapComponent, FsMapStaticComponent } from './components';
 import { FsMapLinkDirective, FsMapMarkerDirective } from './directives';
 
 
-@NgModule({ declarations: [
-  FsMapComponent,
-  FsMapMarkerDirective,
-  FsMapLinkDirective,
-  FsMapStaticComponent,
-],
-exports: [
-  FsMapComponent,
-  FsMapMarkerDirective,
-  FsMapLinkDirective,
-  FsMapStaticComponent,
-], 
-imports: [
-  CommonModule,
-], 
-providers: [provideHttpClient(withJsonpSupport())] })
+@NgModule({
+    exports: [
+        FsMapComponent,
+        FsMapMarkerDirective,
+        FsMapLinkDirective,
+        FsMapStaticComponent,
+    ],
+    imports: [
+        CommonModule,
+        FsMapComponent,
+        FsMapMarkerDirective,
+        FsMapLinkDirective,
+        FsMapStaticComponent,
+    ],
+    providers: [provideHttpClient(withJsonpSupport())] })
 export class FsMapModule {
 }

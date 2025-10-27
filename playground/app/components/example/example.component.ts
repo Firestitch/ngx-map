@@ -3,13 +3,24 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChil
 import { FsMapComponent } from '@firestitch/map';
 
 import { FsMapOptions } from 'src/app/interfaces';
+import { FsMapComponent as FsMapComponent_1 } from '../../../../src/app/components/map/map.component';
+import { FsMapMarkerDirective } from '../../../../src/app/directives/map-marker.directive';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrls: ['./example.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-example',
+    templateUrl: './example.component.html',
+    styleUrls: ['./example.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FsMapComponent_1,
+        FsMapMarkerDirective,
+        MatIcon,
+        MatButton,
+    ],
 })
 export class ExampleComponent implements OnInit {
 

@@ -5,7 +5,8 @@ import { MapAddress } from '../interfaces';
 
 
 @Directive({
-  selector: '[fsMapLink]',
+    selector: '[fsMapLink]',
+    standalone: true,
 })
 export class FsMapLinkDirective implements OnChanges {
 

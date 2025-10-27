@@ -11,10 +11,11 @@ import { FsMap } from '../../services';
 
 
 @Component({
-  selector: 'fs-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
 

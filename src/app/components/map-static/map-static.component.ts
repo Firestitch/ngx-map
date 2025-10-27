@@ -13,10 +13,11 @@ import { FsMapOptions, MapAddress } from '../../interfaces';
 
 
 @Component({
-  selector: 'fs-map-static',
-  templateUrl: './map-static.component.html',
-  styleUrls: ['./map-static.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-map-static',
+    templateUrl: './map-static.component.html',
+    styleUrls: ['./map-static.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
 })
 export class FsMapStaticComponent implements AfterViewInit {
 

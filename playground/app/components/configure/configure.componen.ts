@@ -1,10 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { DrawerRef, DRAWER_DATA, DrawerDataProxy } from '@firestitch/drawer';
+import { FsLabelModule } from '@firestitch/label';
+import { FormsModule } from '@angular/forms';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  templateUrl: './configure.component.html',
-  styleUrls: ['./configure.component.scss']
+    templateUrl: './configure.component.html',
+    styleUrls: ['./configure.component.scss'],
+    standalone: true,
+    imports: [FsLabelModule, FormsModule, MatFormField, MatInput, MatButton]
 })
 export class ConfigureComponent {
   public config;

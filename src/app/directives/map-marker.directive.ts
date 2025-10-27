@@ -14,7 +14,8 @@ import { FsMap } from '../services';
 
 
 @Directive({
-  selector: 'fs-map-marker',
+    selector: 'fs-map-marker',
+    standalone: true,
 })
 export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentInit {
 
