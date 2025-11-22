@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 
 import { guid } from '@firestitch/common';
 
@@ -27,9 +27,6 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
   @HostBinding('style.width')
   public width: string = '100%';
 
-  @ViewChild('mapEl', { read: ElementRef, static: true })
-  public mapEl: ElementRef;
-
   @Input() public address: string | MapAddress;
   @Input() public lat: number;
   @Input() public lng: number;
@@ -54,6 +51,7 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
   private _destroy$ = new Subject();  
   private _map = inject(FsMap);
   private _cdRef = inject(ChangeDetectorRef);
+  private _elementRef = inject(ElementRef);
 
   public ngOnInit(): void {
     this.loaded$
@@ -144,7 +142,7 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
       this.options.center = this.center;
     }
 
-    this.map = new google.maps.Map(this.mapEl.nativeElement as HTMLElement, this.options);
+    this.map = new google.maps.Map(this._elementRef.nativeElement as HTMLElement, this.options);
     this._initEvents();
   }
   
