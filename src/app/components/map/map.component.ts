@@ -11,16 +11,13 @@ import { FsMap } from '../../services';
 
 
 @Component({
-    selector: 'fs-map',
-    templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'fs-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
-  private _map = inject(FsMap);
-  private _cdRef = inject(ChangeDetectorRef);
-
 
   @Input() 
   @HostBinding('style.height')
@@ -54,7 +51,9 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
     position: google.maps.LatLng,
   };
 
-  private _destroy$ = new Subject();
+  private _destroy$ = new Subject();  
+  private _map = inject(FsMap);
+  private _cdRef = inject(ChangeDetectorRef);
 
   public ngOnInit(): void {
     this.loaded$

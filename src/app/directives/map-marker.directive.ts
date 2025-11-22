@@ -9,14 +9,10 @@ import { FsMap } from '../services';
 
 
 @Directive({
-    selector: 'fs-map-marker',
-    standalone: true,
+  selector: 'fs-map-marker',
+  standalone: true,
 })
 export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentInit {
-  private _el = inject(ElementRef);
-  private _map = inject(FsMapComponent);
-  private _mapService = inject(FsMap);
-
 
   @Input() public options: FsMapMarkerOptions = {};
   @Input() public lat: number;
@@ -30,7 +26,10 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
 
   public advancedMarkerElement: google.maps.marker.AdvancedMarkerElement;
 
-  private _destroy$ = new Subject();
+  private _destroy$ = new Subject();  
+  private _el = inject(ElementRef);
+  private _map = inject(FsMapComponent);
+  private _mapService = inject(FsMap);
 
   @HostListener('click', ['$event']) 
   public onClick(event) {
