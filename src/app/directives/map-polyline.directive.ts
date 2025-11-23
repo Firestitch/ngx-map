@@ -16,8 +16,8 @@ export class FsMapPolylineDirective implements OnDestroy, OnChanges, AfterConten
 
   @Input() public options: FsMapPolylineOptions = {};
   @Input() public path: google.maps.LatLng[];
-  @Input() public curveStart: google.maps.LatLng;
-  @Input() public curveEnd: google.maps.LatLng;
+  @Input() public start: google.maps.LatLng | { lat: number, lng: number };
+  @Input() public end: google.maps.LatLng | { lat: number, lng: number };
   @Input() public strokeColor: string = '#0000FF';
   @Input() public strokeWeight: number = 2;
   @Input() public geodesic = false;
@@ -92,8 +92,18 @@ export class FsMapPolylineDirective implements OnDestroy, OnChanges, AfterConten
 
   private _createPolyline(): void {
     let path = this.path;
-    if(this.curveStart && this.curveEnd) {
-      path = this._generateCurvedPath(this.curveStart, this.curveEnd);
+    if(this.start && this.end) {
+      let start: google.maps.LatLng;
+      let end: google.maps.LatLng;
+      if(!(this.start instanceof google.maps.LatLng)) {
+        start = new google.maps.LatLng(this.start.lat, this.start.lng);
+      }
+
+      if(!(this.end instanceof google.maps.LatLng)) {
+        end = new google.maps.LatLng(this.end.lat, this.end.lng);
+      }
+  
+      path = this._generateCurvedPath(start, end);
     }
 
     const polyline = new google.maps.Polyline({

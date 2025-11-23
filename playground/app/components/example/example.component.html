@@ -42,8 +42,8 @@
   @if (config.showPolyline) {
     <fs-map-polyline
         (click)="polylineClick()"
-        [curveStart]="points[0]"
-        [curveEnd]="points[1]">
+        [start]="{ lat: points[0].lat, lng: points[0].lng }"
+        [end]="{ lat: points[1].lat, lng: points[1].lng }">
       <ng-template
           fs-map-polyline-marker
           [positionPercent]="0.5"
