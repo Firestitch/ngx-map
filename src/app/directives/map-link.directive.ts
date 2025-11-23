@@ -5,17 +5,17 @@ import { MapAddress } from '../interfaces';
 
 
 @Directive({
-    selector: '[fsMapLink]',
-    standalone: true,
+  selector: '[fsMapLink]',
+  standalone: true,
 })
 export class FsMapLinkDirective implements OnChanges {
-  private _el = inject(ElementRef);
-
 
   @Input() public target = '_blank';
   @Input() public address: string | MapAddress;
   @Input() public lat: number;
   @Input() public lng: number;
+
+  private _el = inject(ElementRef);
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.address || changes.target || changes.lng || changes.lat) {

@@ -2,7 +2,7 @@
   "name": "@firestitch/map",
   "title": "Google Maps",
   "description": "@firestitch/map",
-  "version": "18.0.9",
+  "version": "18.0.10",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-map"
@@ -67,6 +67,7 @@
     "@firestitch/prompt": "^18.0.4",
     "@firestitch/scroll-picker": "^18.0.0",
     "@firestitch/store": "^18.0.0",
+    "@firestitch/style": "^18.0.54",
     "codelyzer": "^6.0.0",
     "cpx": "^1.5.0",
     "hammerjs": "^2.0.8",

@@ -33,7 +33,7 @@ export class FsMap {
     if (!this._loaded$) {      
       this._loaded$ = new Subject();
 
-      loadJs(`https://maps.googleapis.com/maps/api/js?libraries=places,marker&key=${this._googleMapKey}`)
+      loadJs(`https://maps.googleapis.com/maps/api/js?libraries=places,marker,geometry&key=${this._googleMapKey}`)
         .pipe(
           delay(0),
         )

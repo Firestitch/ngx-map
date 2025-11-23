@@ -1,30 +1,40 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatIcon } from '@angular/material/icon';
+
+import { FsLabelModule } from '@firestitch/label';
 import { FsMapComponent } from '@firestitch/map';
 
+import { FsMapPolylineDirective, FsMapPolylineMarkerDirective } from 'src/app/directives';
 import { FsMapOptions } from 'src/app/interfaces';
+
 import { FsMapComponent as FsMapComponent_1 } from '../../../../src/app/components/map/map.component';
 import { FsMapMarkerDirective } from '../../../../src/app/directives/map-marker.directive';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
 
 
 @Component({
-    selector: 'app-example',
-    templateUrl: './example.component.html',
-    styleUrls: ['./example.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        FsMapComponent_1,
-        FsMapMarkerDirective,
-        MatIcon,
-        MatButton,
-    ],
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FsMapComponent_1,
+    FsMapMarkerDirective,
+    FsMapPolylineDirective,
+    MatIcon,
+    MatButton,
+    FsLabelModule,
+    FormsModule,
+    MatCheckbox,
+    FsLabelModule,
+    FsMapPolylineMarkerDirective,
+  ],
 })
 export class ExampleComponent implements OnInit {
-  private _cdRef = inject(ChangeDetectorRef);
-
 
   @ViewChild(FsMapComponent)
   public map: FsMapComponent;
@@ -32,8 +42,8 @@ export class ExampleComponent implements OnInit {
   public lat;
   public lng;
   public options: FsMapOptions;
-
   public date;
+  public config: any = {};
 
   public marker: {
     lat: number,
@@ -46,11 +56,27 @@ export class ExampleComponent implements OnInit {
     lng: number, 
     options?: google.maps.marker.AdvancedMarkerElementOptions,
   };
+
+  public points;
+
+  private _cdRef = inject(ChangeDetectorRef);
   
   public ngOnInit(): void {
     this.lat = 43.642567;
     this.lng = -79.387054;
+    this.points = [
+      {
+        lat: this.lat + 0.01,
+        lng: this.lng + 0.08,
+      },
+      {
+        lat: this.lat - 0.01,
+        lng: this.lng - 0.08,
+      },
+    ];
     
+    this.setCords(this.lat, this.lng);
+
     setTimeout(() => {
       this.setCords(this.lat, this.lng);
       this._cdRef.markForCheck();
@@ -67,6 +93,14 @@ export class ExampleComponent implements OnInit {
 
   public markerClick(): void {
     console.log('Marker clicked');
+  }
+
+  public polylineClick(): void {
+    console.log('Polyline clicked');
+  }
+  
+  public polylineMarkerClick(): void {
+    console.log('Polyline marker clicked');
   }
 
   public setCords(lat: number, lng: number): void {

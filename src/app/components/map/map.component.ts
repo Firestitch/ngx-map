@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
 
 
+import { guid } from '@firestitch/common';
+
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
 
@@ -124,6 +126,7 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     this.options = {
+      mapId: guid(),
       ...this.options,
       scrollwheel: this.options.scrollwheel ?? this.scrollwheel,
       streetViewControl: this.options.streetViewControl ?? this.streetViewControl,

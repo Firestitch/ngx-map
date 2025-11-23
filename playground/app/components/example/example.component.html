@@ -1,16 +1,32 @@
+<div class="fs-row.gap-lg">
+  <fs-label-field>
+    <fs-label>
+      Show Marker
+    </fs-label>
+    <mat-checkbox [(ngModel)]="config.showMarker"></mat-checkbox>
+  </fs-label-field>
+  <fs-label-field>
+    <fs-label>
+      Show Polyline
+    </fs-label>
+    <mat-checkbox [(ngModel)]="config.showPolyline"></mat-checkbox>
+  </fs-label-field>
+</div>
 <fs-map
-  [lat]="lat"
-  [lng]="lng"
-  [height]="'400px'"
-  [width]="'100%'"
-  [options]="options"
-  [zoom]="14"
-  [maxZoom]="16">
-  @if (marker) {
+    [lat]="lat"
+    [lng]="lng"
+    [height]="'400px'"
+    [width]="'100%'"
+    [options]="options"
+    [zoom]="12"
+    [maxZoom]="16"
+    [zoomControl]="true"
+    [gestureHandling]="'auto'">
+  @if (marker && config.showMarker) {
     <fs-map-marker
-      (click)="markerClick()"
-      [lat]="marker.lat"
-      [lng]="marker.lng">
+        (click)="markerClick()"
+        [lat]="marker.lat"
+        [lng]="marker.lng">
       <div class="marker">
         <a>
           <mat-icon>
@@ -23,19 +39,36 @@
       </div>
     </fs-map-marker>
   }
-  @if (marker) {
+  @if (config.showPolyline) {
+    <fs-map-polyline
+        (click)="polylineClick()"
+        [curveStart]="points[0]"
+        [curveEnd]="points[1]">
+      <ng-template
+          fs-map-polyline-marker
+          [positionPercent]="0.5"
+          [offsetDegrees]="-45"
+          (click)="polylineMarkerClick()">
+        <div style="font-size: 50px; line-height: 50px; text-align: center;">
+          ✈️
+        </div>
+      </ng-template>
+    </fs-map-polyline>
     <fs-map-marker
-      (click)="markerClick()"
-      [lat]="markerIcon.lat"
-      [lng]="markerIcon.lng">
+      [lat]="points[0].lat"
+      [lng]="points[0].lng">
+    </fs-map-marker>
+    <fs-map-marker
+      [lat]="points[1].lat"
+      [lng]="points[1].lng">
     </fs-map-marker>
   }
 </fs-map>
 <br>
-  <br>
-    <button
-      mat-raised-button
-      type="button"
-      (click)="center()">
-      Random Recenter Map
-    </button>
+<br>
+<button
+    mat-raised-button
+    type="button"
+    (click)="center()">
+  Random Recenter Map
+</button>

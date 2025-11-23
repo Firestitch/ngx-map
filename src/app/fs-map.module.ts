@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 
 import { FsMapComponent, FsMapStaticComponent } from './components';
-import { FsMapLinkDirective, FsMapMarkerDirective } from './directives';
+import { FsMapLinkDirective, FsMapMarkerDirective, FsMapPolylineDirective, FsMapPolylineMarkerDirective } from './directives';
 
 
 @NgModule({
@@ -13,6 +13,8 @@ import { FsMapLinkDirective, FsMapMarkerDirective } from './directives';
     FsMapMarkerDirective,
     FsMapLinkDirective,
     FsMapStaticComponent,
+    FsMapPolylineDirective,
+    FsMapPolylineMarkerDirective,
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,8 @@ import { FsMapLinkDirective, FsMapMarkerDirective } from './directives';
     FsMapMarkerDirective,
     FsMapLinkDirective,
     FsMapStaticComponent,
+    FsMapPolylineDirective,
+    FsMapPolylineMarkerDirective,
   ],
   providers: [provideHttpClient(withJsonpSupport())] })
 export class FsMapModule {
