@@ -1,4 +1,4 @@
-import { DestroyRef, Directive, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, inject } from '@angular/core';
+import { DestroyRef, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { filter } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { FsMapPolylineDirective } from './map-polyline.directive';
 
 
 @Directive({
-  selector: '[fs-map-polyline-marker]',
+  selector: 'fs-map-polyline-marker',
   standalone: true,
 })
 export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
@@ -21,10 +21,10 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
   @Output() public click = new EventEmitter<google.maps.MapMouseEvent>();
 
   private _map = inject(FsMapComponent);
-  private _content = inject(TemplateRef<any>);
   private _polyline = inject(FsMapPolylineDirective);
   private _destroyRef = inject(DestroyRef);
   private _marker: google.maps.marker.AdvancedMarkerElement;
+  private _el = inject(ElementRef);
 
   public ngOnInit(): void {
     this._polyline.polyline$
@@ -36,7 +36,7 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
         this._marker = this._placeIconOnPolyline(
           polyline, 
           this._map.map, 
-          this._getHtmlFromTemplate(),
+          this._el.nativeElement,
           this.offsetDegrees, 
           this.positionPercent,
         );
@@ -47,22 +47,6 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
     this._marker?.remove();
   }
 
-  private _getHtmlFromTemplate(): string {
-    const embeddedView = this._content.createEmbeddedView(null);
-    embeddedView.detectChanges();
-    
-    let htmlContent = '';
-    embeddedView.rootNodes.forEach((node: HTMLElement) => {
-      if (node.outerHTML) {
-        htmlContent += node.outerHTML;
-      }
-    });
-    
-    embeddedView.destroy();
-
-    return htmlContent;
-  }
-  
   /**
  * Places a custom icon (emoji or PNG) at a specific position on a polyline,
  * perfectly rotated to match the curve's tangent direction.
@@ -77,7 +61,7 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
   private _placeIconOnPolyline(
     polyline: google.maps.Polyline,
     map: google.maps.Map,
-    htmlContent: string,
+    contentElement: HTMLElement,
     offsetDegrees: number = 0,
     positionPercent: number = 0.5,
   ): google.maps.marker.AdvancedMarkerElement {
@@ -112,12 +96,12 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
     const finalRotation = heading + offsetDegrees;
   
     // Create the marker with rotated content
-    const content = this._createMarkerContent(htmlContent, finalRotation);
+    const content = this._createMarkerContent(contentElement, finalRotation);
   
     const marker = new google.maps.marker.AdvancedMarkerElement({
       map: map,
       position: position,
-      content: content,
+      content,
     });
   
     if(this.click.observed) {
@@ -206,7 +190,7 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
   /**
  * Creates the HTML content structure for the marker
  */
-  private _createMarkerContent(htmlContent: string, heading: number): HTMLElement {
+  private _createMarkerContent(contentElement: HTMLElement, heading: number): HTMLElement {
     const rootContainer = document.createElement('div');
     rootContainer.style.cssText = `
     position: absolute;
@@ -227,7 +211,7 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
   `;
   
     const iconContent = document.createElement('div');
-    iconContent.innerHTML = htmlContent;
+    iconContent.append(contentElement);
     iconContent.style.cssText = `
     font-size: 32px;
     line-height: 1;

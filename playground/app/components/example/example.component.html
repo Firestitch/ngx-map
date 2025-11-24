@@ -44,15 +44,14 @@
         (click)="polylineClick()"
         [start]="{ lat: points[0].lat, lng: points[0].lng }"
         [end]="{ lat: points[1].lat, lng: points[1].lng }">
-      <ng-template
-          fs-map-polyline-marker
+      <fs-map-polyline-marker
           [positionPercent]="0.5"
           [offsetDegrees]="-45"
           (click)="polylineMarkerClick()">
         <div style="font-size: 50px; line-height: 50px; text-align: center;">
           ✈️
         </div>
-      </ng-template>
+      </fs-map-polyline-marker>
     </fs-map-polyline>
     <fs-map-marker
       [lat]="points[0].lat"
