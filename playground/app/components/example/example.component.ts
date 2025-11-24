@@ -40,6 +40,7 @@ export class ExampleComponent implements OnInit {
   public map: FsMapComponent;
 
   public lat;
+  public markerLabel: string = 'Home';
   public lng;
   public options: FsMapOptions;
   public date;
@@ -98,7 +99,7 @@ export class ExampleComponent implements OnInit {
   public polylineClick(): void {
     console.log('Polyline clicked');
   }
-  
+
   public polylineMarkerClick(): void {
     console.log('Polyline marker clicked');
   }

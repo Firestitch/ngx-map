@@ -76,7 +76,7 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
       return;
     }
 
-    const content = this._el.nativeElement.innerHTML ? this._el.nativeElement : null;
+    const content = this._el.nativeElement;
 
     if(this.advancedMarkerElement) {
       this.advancedMarkerElement.content = content;
@@ -88,16 +88,17 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
       return;
     }
 
-    this.advancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
-      ...this.options,
-      map: this._map.map,
-      content: content,
-      zIndex: this.zIndex,
-      position: {
-        lat: this.lat,
-        lng: this.lng,
-      },
-    }); 
+    this.advancedMarkerElement = new google.maps.marker
+      .AdvancedMarkerElement({
+        ...this.options,
+        map: this._map.map,
+        content,
+        zIndex: this.zIndex,
+        position: {
+          lat: this.lat,
+          lng: this.lng,
+        },
+      }); 
 
     this.advancedMarkerElement.element
       .classList.add('fs-map-marker-container');      
