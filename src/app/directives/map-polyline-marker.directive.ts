@@ -105,7 +105,8 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
     });
   
     if(this.click.observed) {
-      marker.addListener('click', (event) => {
+      marker.addListener('click', (event: google.maps.MapMouseEvent) => {
+        event.domEvent?.stopPropagation();
         this.click.emit(event);
       });
     }
