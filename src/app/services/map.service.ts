@@ -17,6 +17,10 @@ export class FsMap {
   private _loaded = false;
   private _loaded$: Subject<any>;
 
+  constructor() {
+    (window as any).fsMapGmNoop = this.fsMapGmNoop.bind(this);
+  }
+
   public set googleMapKey(key: string) {
     this._googleMapKey = key;
   }
@@ -33,18 +37,22 @@ export class FsMap {
     if (!this._loaded$) {      
       this._loaded$ = new Subject();
 
-      loadJs(`https://maps.googleapis.com/maps/api/js?libraries=places,marker,geometry&key=${this._googleMapKey}`)
+      const url = `https://maps.googleapis.com/maps/api/js?loading=async&libraries=places,marker,geometry&key=${this._googleMapKey}&callback=fsMapGmNoop`;
+
+      loadJs(url)
         .pipe(
           delay(0),
         )
-        .subscribe(() => {
-          this._loaded = true;
-          this._loaded$.next(null);
-          this._loaded$.complete();
-        });
+        .subscribe();
     }
 
     return this._loaded$.asObservable();
+  }
+
+  public fsMapGmNoop(): void {
+    this._loaded = true;
+    this._loaded$.next(null);
+    this._loaded$.complete();
   }
 
 }

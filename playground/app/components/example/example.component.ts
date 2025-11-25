@@ -76,10 +76,10 @@ export class ExampleComponent implements OnInit {
       },
     ];
 
-    setTimeout(() => {
-      this.markerLabel = 'Home 2';
-      this._cdRef.markForCheck();
-    }, 2000);
+    // setTimeout(() => {
+    //   this.markerLabel = 'Home 2';
+    //   this._cdRef.markForCheck();
+    // }, 2000);
     
     this.setCords(this.lat, this.lng);
 
