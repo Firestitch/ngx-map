@@ -1,4 +1,4 @@
-import { DestroyRef, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { ContentChild, DestroyRef, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { filter } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { FsMapComponent } from '../components';
 
+import { FsMapPolylineMarkerInfoWindowDirective } from './map-polyline-marker-info-window.directive';
 import { FsMapPolylineDirective } from './map-polyline.directive';
 
 
@@ -14,6 +15,9 @@ import { FsMapPolylineDirective } from './map-polyline.directive';
   standalone: true,
 })
 export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
+
+  @ContentChild(FsMapPolylineMarkerInfoWindowDirective)
+  public infoWindowDirective: FsMapPolylineMarkerInfoWindowDirective;
 
   @Input() public offsetDegrees: number = 0;
   @Input() public positionPercent: number = 0.5;
@@ -25,6 +29,10 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
   private _destroyRef = inject(DestroyRef);
   private _marker: google.maps.marker.AdvancedMarkerElement;
   private _el = inject(ElementRef);
+
+  public get marker(): google.maps.marker.AdvancedMarkerElement {
+    return this._marker;
+  }
 
   public ngOnInit(): void {
     this._polyline.polyline$
@@ -100,7 +108,7 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
   
     const marker = new google.maps.marker.AdvancedMarkerElement({
       map: map,
-      position: position,
+      position,
       content,
     });
   
@@ -109,6 +117,10 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
         event.domEvent?.stopPropagation();
         this.click.emit(event);
       });
+    }
+
+    if(this.infoWindowDirective) {
+      this.infoWindowDirective.createInfoWindow(marker, position.lat(), position.lng());
     }
 
     return marker;

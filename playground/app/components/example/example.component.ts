@@ -8,7 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { FsLabelModule } from '@firestitch/label';
 import { FsMapComponent } from '@firestitch/map';
 
-import { FsMapPolylineDirective, FsMapPolylineMarkerDirective } from 'src/app/directives';
+import { FsMapMarkerInfoWindowDirective, FsMapPolylineDirective, FsMapPolylineMarkerDirective, FsMapPolylineMarkerInfoWindowDirective } from 'src/app/directives';
 import { FsMapOptions } from 'src/app/interfaces';
 
 import { FsMapComponent as FsMapComponent_1 } from '../../../../src/app/components/map/map.component';
@@ -32,6 +32,8 @@ import { FsMapMarkerDirective } from '../../../../src/app/directives/map-marker.
     MatCheckbox,
     FsLabelModule,
     FsMapPolylineMarkerDirective,
+    FsMapMarkerInfoWindowDirective,
+    FsMapPolylineMarkerInfoWindowDirective,
   ],
 })
 export class ExampleComponent implements OnInit {

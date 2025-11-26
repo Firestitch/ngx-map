@@ -1,7 +1,7 @@
 
 
 export { FsMapComponent, FsMapStaticComponent } from './app/components';
-export { FsMapLinkDirective, FsMapMarkerDirective, FsMapPolylineDirective, FsMapPolylineMarkerDirective } from './app/directives';
+export { FsMapLinkDirective, FsMapMarkerDirective, FsMapMarkerInfoWindowDirective, FsMapPolylineDirective, FsMapPolylineMarkerDirective, FsMapPolylineMarkerInfoWindowDirective } from './app/directives';
 export { FsMapModule } from './app/fs-map.module';
 export { FS_MAP_GOOGLE_MAP_KEY } from './app/injectors';
 export * from './app/interfaces';

@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
+import { AfterContentInit, ContentChild, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,12 +7,17 @@ import { FsMapComponent } from '../components';
 import { FsMapMarkerOptions } from '../interfaces';
 import { FsMap } from '../services';
 
+import { FsMapMarkerInfoWindowDirective } from './map-marker-info-window.directive';
+
 
 @Directive({
   selector: 'fs-map-marker',
   standalone: true,
 })
-export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentInit {
+export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentInit, OnDestroy {
+
+  @ContentChild(FsMapMarkerInfoWindowDirective) 
+  public infoWindowDirective: FsMapMarkerInfoWindowDirective;
 
   @Input() public options: FsMapMarkerOptions = {};
   @Input() public lat: number;
@@ -30,6 +35,7 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
   private _el = inject(ElementRef);
   private _map = inject(FsMapComponent);
   private _mapService = inject(FsMap);
+  private _infoWindow: google.maps.InfoWindow;
 
   @HostListener('click', ['$event']) 
   public onClick(event) {
@@ -42,6 +48,10 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
     }    
   }
 
+  public get el(): HTMLElement {
+    return this._el.nativeElement;
+  }
+
   public ngOnChanges(changes: SimpleChanges): void {
     if(
       (changes.lat && !changes.lat.firstChange) || 
@@ -49,6 +59,11 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
     ) {
       this._createMarker();
     }
+  }
+
+  public onDestroy(): void {
+    this._infoWindow?.close();
+    this._infoWindow = null;
   }
 
   public ngAfterContentInit(): void {
@@ -76,10 +91,8 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
       return;
     }
 
-    const content = this._el.nativeElement;
-
     if(this.advancedMarkerElement) {
-      this.advancedMarkerElement.content = content;
+      this.advancedMarkerElement.content = this.el;
       this.advancedMarkerElement.position = {
         lat: this.lat,
         lng: this.lng,
@@ -92,7 +105,7 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
       .AdvancedMarkerElement({
         ...this.options,
         map: this._map.map,
-        content,
+        content: this.el,
         zIndex: this.zIndex,
         position: {
           lat: this.lat,
@@ -103,28 +116,33 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
     this.advancedMarkerElement.element
       .classList.add('fs-map-marker-container');      
 
-    if(this.click.observers.length) {
+    if(this.click.observed) {
       this.advancedMarkerElement.addListener('click', (event) => {
         this.click.emit(event);
       });
     }
 
-    if(this.drag.observers.length) {
+    if(this.drag.observed) {
       this.advancedMarkerElement.addListener('drag', (event) => {
         this.drag.emit(event);
       });
     }
 
-    if(this.dragStart.observers.length) {
+    if(this.dragStart.observed) {
       this.advancedMarkerElement.addListener('dragstart', (event) => {
         this.dragStart.emit(event);
       });
     }
 
-    if(this.dragEnd.observers.length) {
+    if(this.dragEnd.observed) {
       this.advancedMarkerElement.addListener('dragend', (event) => {
         this.dragEnd.emit(event);
       });
+    }
+ 
+    if(this.infoWindowDirective) {
+      this.infoWindowDirective
+        .createInfoWindow(this.advancedMarkerElement, this.position.lat(), this.position.lng());
     }
   }
 
