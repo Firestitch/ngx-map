@@ -120,7 +120,7 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
     }
 
     if(this.infoWindowDirective) {
-      this.infoWindowDirective.createInfoWindow(marker, position.lat(), position.lng());
+      this.infoWindowDirective.createInfoWindow(marker);
     }
 
     return marker;

@@ -142,7 +142,7 @@ export class FsMapMarkerDirective implements OnDestroy, OnChanges, AfterContentI
  
     if(this.infoWindowDirective) {
       this.infoWindowDirective
-        .createInfoWindow(this.advancedMarkerElement, this.position.lat(), this.position.lng());
+        .createInfoWindow(this.advancedMarkerElement);
     }
   }
 
