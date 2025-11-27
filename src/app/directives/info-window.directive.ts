@@ -13,6 +13,7 @@ export class FsInfoWindowDirective implements OnDestroy {
   protected _infoWindow: google.maps.InfoWindow;
   protected _el = inject(ElementRef);
   protected _marker: google.maps.marker.AdvancedMarkerElement;
+  private _openTimeoutId: number;
   private _closeTimeoutId: number;
   private _mouseEnter: () => void;
   private _mouseLeave: () => void;
@@ -20,6 +21,7 @@ export class FsInfoWindowDirective implements OnDestroy {
   public ngOnDestroy(): void {
     this._infoWindow?.close();
     this._infoWindow = null;
+    clearTimeout(this._openTimeoutId);
     this._marker.removeEventListener('mouseenter', this._mouseEnter);
     this._marker.removeEventListener('mouseleave', this._mouseLeave);
   }
@@ -28,44 +30,51 @@ export class FsInfoWindowDirective implements OnDestroy {
     marker: google.maps.marker.AdvancedMarkerElement, 
   ): void {
     this._marker = marker;
+    this._infoWindow = new google.maps.InfoWindow();
+    this._infoWindow.setContent(this._el.nativeElement);    
+    this._infoWindow.setOptions({
+      headerDisabled: true,
+    });
+
     this._mouseEnter = () => {
       clearTimeout(this._closeTimeoutId);
-      this._infoWindow?.close();
-      this._infoWindow = new google.maps.InfoWindow();
-      this._infoWindow.setContent(this._el.nativeElement);    
-      this._infoWindow.setOptions({
-        headerDisabled: true,
-      });
-      
-      this._infoWindow.addListener('domready', () => {
-        this._el.nativeElement.parentElement.parentElement
-          .addEventListener('mouseenter', () => {
-            clearTimeout(this._closeTimeoutId);
-            this._marker
-              .removeEventListener('mouseleave', this._mouseLeave);
-          });
+      clearTimeout(this._openTimeoutId);
 
-        this._el.nativeElement.parentElement.parentElement
-          .addEventListener('mouseleave', () => {
-            this._closeInfoWindow();
-          });
-      });
+      this._openTimeoutId = setTimeout(() => {
+        this._infoWindow.addListener('domready', () => {
+          this._el.nativeElement.parentElement.parentElement
+            .addEventListener('mouseenter', () => {
+              clearTimeout(this._closeTimeoutId);
+              this._marker
+                .removeEventListener('mouseleave', this._mouseLeave);
+            });
 
-      if(this._mouseLeave) {
+          this._el.nativeElement.parentElement.parentElement
+            .addEventListener('mouseleave', () => {
+              clearTimeout(this._openTimeoutId);
+              this._closeInfoWindow();
+            });
+        });
+
+        if(this._mouseLeave) {
+          this._marker
+            .removeEventListener('mouseleave', this._mouseLeave);
+        }
+
         this._marker
-          .removeEventListener('mouseleave', this._mouseLeave);
-      }
-
-      this._marker
-        .addEventListener('mouseleave', this._mouseLeave);
+          .addEventListener('mouseleave', this._mouseLeave);
         
-      this._infoWindow.open({
-        map: this._map.map,
-        anchor: this._marker,
-      });
+        if(!this._infoWindow.isOpen) {
+          this._infoWindow.open({
+            map: this._map.map,
+            anchor: this._marker,
+          });
+        }
+      }, 500);
     };
 
     this._mouseLeave = () => {
+      clearTimeout(this._openTimeoutId);
       this._closeInfoWindow();
     };
 
@@ -74,9 +83,9 @@ export class FsInfoWindowDirective implements OnDestroy {
   }
 
   private _closeInfoWindow(): void {
+    clearTimeout(this._closeTimeoutId);
     this._closeTimeoutId = setTimeout(() => {
       this._infoWindow?.close();
-      this._infoWindow = null;
     }, 500);
   }
 }
