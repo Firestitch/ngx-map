@@ -50,6 +50,7 @@ export class FsInfoWindowDirective implements OnDestroy {
     
       this._openTimeoutId = setTimeout(() => {
         this._infoWindow.addListener('domready', () => {
+          // gm-style-iw-c
           this._el.nativeElement.parentElement.parentElement
             .addEventListener('mouseenter', () => {
               clearTimeout(this._closeTimeoutId);

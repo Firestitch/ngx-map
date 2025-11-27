@@ -1,14 +1,18 @@
-::ng-deep {
-  .fs-map-marker-container {
-    outline: none;
-  }
-
-  fs-map-polyline-marker fs-map-polyline-marker-info-window,
-  fs-map-marker fs-map-marker-info-window {
-    display: none;
-  }
-}
-
 :host {
   display: block;
+
+  ::ng-deep {
+    .fs-map-marker-container {
+      outline: none;
+    }
+
+    .gm-style-iw-tc {
+      pointer-events: none;
+    }
+
+    fs-map-polyline-marker fs-map-polyline-marker-info-window,
+    fs-map-marker fs-map-marker-info-window {
+      display: none;
+    }
+  }
 }
