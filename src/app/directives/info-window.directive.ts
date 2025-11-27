@@ -40,6 +40,14 @@ export class FsInfoWindowDirective implements OnDestroy {
       clearTimeout(this._closeTimeoutId);
       clearTimeout(this._openTimeoutId);
 
+      this._mouseLeave = () => {
+        clearTimeout(this._openTimeoutId);
+        this._closeInfoWindow();
+      };
+  
+      this._marker
+        .addEventListener('mouseleave', this._mouseLeave);
+    
       this._openTimeoutId = setTimeout(() => {
         this._infoWindow.addListener('domready', () => {
           this._el.nativeElement.parentElement.parentElement
@@ -56,14 +64,12 @@ export class FsInfoWindowDirective implements OnDestroy {
             });
         });
 
-        if(this._mouseLeave) {
-          this._marker
-            .removeEventListener('mouseleave', this._mouseLeave);
-        }
-
+        this._marker
+          .removeEventListener('mouseleave', this._mouseLeave);
+        
         this._marker
           .addEventListener('mouseleave', this._mouseLeave);
-        
+
         if(!this._infoWindow.isOpen) {
           this._infoWindow.open({
             map: this._map.map,
@@ -71,11 +77,6 @@ export class FsInfoWindowDirective implements OnDestroy {
           });
         }
       }, 500);
-    };
-
-    this._mouseLeave = () => {
-      clearTimeout(this._openTimeoutId);
-      this._closeInfoWindow();
     };
 
     this._marker
