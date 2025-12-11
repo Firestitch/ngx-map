@@ -96,6 +96,10 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
           });
         });
     }
+
+    if (changes.lat && changes.lng && !changes.lat.firstChange && !changes.lng.firstChange) {
+      this.setCenter(this.lat, this.lng);
+    }
   }
 
   public get loaded$() {
@@ -108,7 +112,7 @@ export class FsMapComponent implements OnChanges, OnInit, OnDestroy {
   public setCenter(lat: number, lng: number): void {
     this.lat = lat;
     this.lng = lng;
-    this.map.setCenter(this.center);
+    this.map?.setCenter(this.center);
   }
 
   public get center(): google.maps.LatLng {

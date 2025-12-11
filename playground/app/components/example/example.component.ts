@@ -42,8 +42,8 @@ export class ExampleComponent implements OnInit {
   public map: FsMapComponent;
 
   public lat;
-  public markerLabel: string = 'Home';
   public lng;
+  public markerLabel: string = 'Home';
   public options: FsMapOptions;
   public date;
   public config: any = {};
@@ -77,11 +77,6 @@ export class ExampleComponent implements OnInit {
         lng: this.lng - 0.08,
       },
     ];
-
-    // setTimeout(() => {
-    //   this.markerLabel = 'Home 2';
-    //   this._cdRef.markForCheck();
-    // }, 2000);
     
     this.setCords(this.lat, this.lng);
 
