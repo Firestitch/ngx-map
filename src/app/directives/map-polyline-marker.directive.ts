@@ -211,6 +211,10 @@ export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
     height: 40px;
     transform: translate(-50%, -50%);
   `;
+
+    // Stop native click from bubbling to prevent dual event firing
+    // (native DOM click + @Output() click EventEmitter)
+    rootContainer.addEventListener('click', (e) => e.stopPropagation());
   
     const rotationWrapper = document.createElement('div');
     rotationWrapper.style.cssText = `
