@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, ElementRef, inject } from '@angular/core';
+import { AfterContentInit, Directive, ElementRef, forwardRef, inject } from '@angular/core';
 
 
 import { FsInfoWindowDirective } from './info-window.directive';
@@ -13,7 +13,7 @@ export class FsMapPolylineMarkerInfoWindowDirective
   extends FsInfoWindowDirective implements AfterContentInit {
     
   protected _el = inject(ElementRef);
-  protected _polylineMarker = inject(FsMapPolylineMarkerDirective);
+  protected _polylineMarker = inject(forwardRef(() => FsMapPolylineMarkerDirective));
 
   public ngAfterContentInit(): void {
     // let lng: number;

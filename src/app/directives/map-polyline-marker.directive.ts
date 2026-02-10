@@ -1,4 +1,4 @@
-import { ContentChild, DestroyRef, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { ContentChild, DestroyRef, Directive, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { filter } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { FsMapPolylineDirective } from './map-polyline.directive';
 })
 export class FsMapPolylineMarkerDirective implements OnInit, OnDestroy {
 
-  @ContentChild(FsMapPolylineMarkerInfoWindowDirective)
+  @ContentChild(forwardRef(() => FsMapPolylineMarkerInfoWindowDirective))
   public infoWindowDirective: FsMapPolylineMarkerInfoWindowDirective;
 
   @Input() public offsetDegrees: number = 0;
